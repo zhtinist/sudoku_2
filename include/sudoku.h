@@ -724,15 +724,7 @@ int resort(int x){
  	i=x;
  	return 9*d[i-1]+(j-1)*9+k;
 }
-// int resort(int x){
-// 	int i,j,k;
-// 	k=x%10;
-//  	x=x/10;
-//  	j=x%10;
-//  	x=x/10;
-//  	i=x;
-// 	return (i-1)*81+(j-1)*9+k;
-// }
+
 int disresort(int x){
 	for(int i=110;i<999;i++){
 		if(resort(i)==x)

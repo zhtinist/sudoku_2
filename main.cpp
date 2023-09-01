@@ -178,6 +178,10 @@ int main(void)
 
 		case 0:
 			break;
+		default:
+			cout<<"please use avalable numbers!";
+			system("pause");
+			break;
 		}
 	}
 	return 0;
