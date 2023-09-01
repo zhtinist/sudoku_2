@@ -121,7 +121,7 @@ void OutFileFun1(string _PATH, bool suc, int* book, int _Ctime, int FunNum, int 
         for(int i = 1, k = 1; i <= FunNum; i++){
             op << " " << book[i]*i;
             k++;
-            if(k == 10) { k = 1;}
+            if(k == 10) {op<<endl; k = 1;}
         }
 		op << endl;
     }
