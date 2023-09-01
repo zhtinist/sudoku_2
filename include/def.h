@@ -18,6 +18,7 @@
 #define NO 0
 using namespace std;
 typedef int status;
+////针对数独的dpll
 //十字链表结构体
 typedef struct SATNode{
 	int data;  //数据域
@@ -66,38 +67,7 @@ int PickVar(SATList* s);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-       // 直接取第一个子句的第一个变元
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+////针对助教算例的高性能dpll
 typedef struct DataNode{
     int value = 0;
     struct DataNode* next;

@@ -68,38 +68,18 @@ int main(void)
 				}
 				cout<<"所有数据已输出!"<<endl;
 			}
-			// getchar(); getchar();
 			system("pause");
 			break;
 		case 3:
 			if (L == NULL) printf("未导入文件\n");
 			else
 			{
-				// value = (int*)malloc(sizeof(int) * (boolCount + 1));
-				// for (i = 1; i <= boolCount; i++) value[i] = 1;  //初始化，均赋为1
-				// start = clock();  //计时开始;
-				// result = DpllSolver(CNFList, value);
-				// finish = clock();    //结束
-				// printf("求解结果：%d\n", result);
-				// if (result == 1)
-				// {
-				// 	for (i = 1; i <= boolCount; i++)
-				// 	{
-				// 		if (value[i] == 1) printf("%d ", i);
-				// 		else printf("%d ", -i);
-				// 	}
-				// 	printf("\n");
-				// }
+				
 				cod=1;
 				isBetter=0;
 				CoreFun(L, filename, FunNum, cod, temp);
-				//time1 = (double)(finish - start) / CLOCKS_PER_SEC;//计算运行时间
-				//printf("运行时间=%lfms\n", time1 * 1000);//输出运行时间
-				//if (WriteFile(result, time1, value) == 1)
-				//	printf("结果已保存至同名文件.res\n");
-				//else printf("结果保存失败\n");
+				cout<<"请重新用1读取文件"<<endl;
 			}
-			// getchar(); getchar();
 			system("pause");
 			break;
 		case 4:
@@ -109,34 +89,8 @@ int main(void)
 				cod=2;
 				isBetter=1;
 				CoreFun(L, filename, FunNum, cod, temp);
-				// value = (int*)malloc(sizeof(int) * (boolCount + 1));
-				// for (i = 1; i <= boolCount; i++) value[i] = 1;  //初始化，均赋为1
-				// start = clock();  //计时开始;
-				// result = DPLL(CNFList, value);
-				// finish = clock();    //结束
-				// printf("求解结果：%d\n", result);
-				// if (result == 1)
-				// {
-				// 	for (i = 1; i <= boolCount; i++)
-				// 	{
-				// 		if (value[i] == 1) printf("%d ", i);
-				// 		else printf("%d ", -i);
-				// 	}
-				// 	printf("\n");
-				// }
-				// time2 = (double)(finish - start) / CLOCKS_PER_SEC;//计算运行时间
-				// printf("运行时间=%lfms\n", time2 * 1000);//输出运行时间
-				// if(result&&time1) {
-				// 	if(time1>time2){
-				// 		printf("优化率为[(t-to)/t]*100%%=%f%%",((time1-time2)/time1)*100);
-				// 	}
-				// 	else printf("优化率为[(t-to)/t]*100%%=%f%%",((time2-time1)/time2)*100);
-				// }
-				// if (WriteFileAgain(result, time2, value) == 1)
-				// 	printf("结果已保存至同名文件.res\n");
-				// else printf("结果保存失败\n");
+				cout<<"请重新用1读取文件"<<endl;
 			}
-			// getchar(); getchar();
 			system("pause");
 			break;	
 		case 5:
@@ -164,8 +118,6 @@ int main(void)
 					}
 				}
 				printf("cnf文件已生成!准备求解\n");
-				// printf("输入CNF文件名：");
-				// scanf("%s", fileName);
 				int crea_sudoku[100]={0};
 				for(i=1;i<=61;i++)
 				{
@@ -204,13 +156,6 @@ int main(void)
 				break;
 			}
 		case 6:{
-			// printf("输入CNF文件名：");
-			// scanf("%s", fileName);
-			// while(!las_vegas(7));  //拉斯维加斯算法
-			// for(i=1;i<=61;i++)
-			// 	nnn[i]=CHESS[i+4]-'0';
-			// CreateSudoku(nnn);
-			// getchar();getchar();
 			cout<<"正在生成蜂窝数独!请输入难度:\n1--easy\n2--normal\n3--hard"<<endl;
 			int rank=1;
 			cin>>rank;

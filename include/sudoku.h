@@ -2,9 +2,9 @@
 #include"create_new_game.h"
 
 /*
-* 函数名称: CreateBinary
-* 接受参数: int
-* 函数功能: 按照指定大小生成棋盘
+* 函数名称: CreateSudoku
+* 接受参数: int*
+* 函数功能:打印对应数独
 * 返回值: void
 */
 void CreateSudoku(int a[]){

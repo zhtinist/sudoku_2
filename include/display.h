@@ -1,4 +1,5 @@
 #include"def.h"
+//Ωªª•Ã· æ”Ô
 void display()
 {
 	system("cls");
