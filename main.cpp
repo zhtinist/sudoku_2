@@ -4,6 +4,7 @@
 int boolCount;  //布尔变元数量
 int clauseCount;  //子句数量
 char fileName[300]; //文件名
+char filename3[300];
 int temp[9][9];
 char CHESS[100]="HQV1G0000000000000000000000000000000000000000000000000000000000000";
 int zeroNum;
@@ -77,8 +78,9 @@ int main(void)
 				
 				cod=1;
 				isBetter=0;
+				strcpy(filename3,fileName);
 				CoreFun(L, filename, FunNum, cod, temp);
-				cout<<"请重新用1读取文件"<<endl;
+				cout<<"\n请重新用1读取文件"<<endl;
 			}
 			system("pause");
 			break;
@@ -89,7 +91,7 @@ int main(void)
 				cod=2;
 				isBetter=1;
 				CoreFun(L, filename, FunNum, cod, temp);
-				cout<<"请重新用1读取文件"<<endl;
+				cout<<"\n请重新用1读取文件"<<endl;
 			}
 			system("pause");
 			break;	
@@ -221,7 +223,7 @@ void CoreFun(HeadNode* L, string& filename, int FunNum, int cod, int array[ROW][
         end = clock();
 		time2=end-begin;
         cout << "DPLL()部分运行的时间为" << end-begin << "ms" << endl;
-		if(isTrue&&time1&&time2){
+		if(isTrue&&time1&&time2&&!(strcmp(filename3,fileName))){
 			if(time1>time2){
 						printf("优化率为[(t-to)/t]*100%%=%f%%",((time1-time2)/time1)*100);
 					}
