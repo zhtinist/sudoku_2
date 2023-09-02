@@ -140,3 +140,514 @@ int iscorrect(char* game){
     return re;
 
 }
+
+/*
+ * 函数名称: destroyClause
+ * 接受参数: SATList*&
+ * 函数功能: 销毁链表
+ * 返回值: int
+ */
+void destroyClause(SATList*& cnf)
+{
+	SATList* lp1, * lp2;
+	SATNode* tp1, * tp2;
+	for (lp1 = cnf; lp1 != NULL; lp1 = lp2)
+	{
+		lp2 = lp1->next;
+		for (tp1 = lp1->head; tp1 != NULL; tp1 = tp2)
+		{
+			tp2 = tp1->next;
+			free(tp1);
+		}
+		free(lp1);
+	}
+	cnf = NULL;
+}
+
+/*
+ * 函数名称: isUnitClause
+ * 接受参数: SATNode*
+ * 函数功能: 判断是否为单子句，是返回1，不是返回0
+ * 返回值: int
+ */
+int isUnitClause(SATNode* cnf)
+{
+	if (cnf != NULL && cnf->next == NULL)
+		return 1;
+	else
+		return 0;
+}
+
+/*
+ * 函数名称: evaluateClause
+ * 接受参数: SATList*
+ * 函数功能: 评估子句的真假状态，真返回1，假返回0
+ * 返回值: int
+ */
+int evaluateClause(SATNode* cnf,int v[])
+{
+	SATNode* tp = cnf;
+	while (tp != NULL)
+	{
+		if (tp->data > 0 && v[tp->data] == 1 ||
+			tp->data < 0 && v[-tp->data] == 0)
+			return 1;
+	}
+	return 0;
+}
+
+/*
+ * 函数名称: removeClause
+ * 接受参数: SATList*,SATList*
+ * 函数功能: 在已有的十字链表中删除指定的子句，删除成功返回1，失败返回0
+ * 返回值: int
+ */
+int removeClause(SATList*& cnf, SATList*& root)
+{
+	SATList* lp = root;
+	if (lp == cnf) root = root->next;  //删除为头
+	else
+	{
+		while (lp != NULL && lp->next != cnf) lp = lp->next;
+		lp->next = lp->next->next;
+	}
+	free(cnf);
+	cnf = NULL;
+	return 1;
+}
+
+/*
+ * 函数名称: removeNote
+ * 接受参数: SATNode*,SATNode*
+ * 函数功能: 在指定的子句中删除指定的文字，删除成功返回1，失败返回0
+ * 返回值: int
+ */
+int removeNode(SATNode*& cnf, SATNode*& head)
+{
+	SATNode* lp = head;
+	if (lp == cnf) head = head->next;  //删除为头
+	else
+	{
+		while (lp != NULL && lp->next != cnf) lp = lp->next;
+		lp->next = lp->next->next;
+	}
+	free(cnf);
+	cnf = NULL;
+	return 1;
+}
+
+/*
+ * 函数名称: addClause
+ * 接受参数: SATList*,SATList*
+ * 函数功能: 在已有的十字链表中添加指定的子句，添加成功返回1，失败返回0
+ * 返回值: int
+ */
+int addClause(SATList* cnf, SATList*& root)
+{
+	//直接插入在表头
+	if (cnf != NULL)
+	{
+		cnf->next = root;
+		root = cnf;
+		return 1;
+	}
+	return 0;
+}
+
+/*
+ * 函数名称: emptyClause
+ * 接受参数: SATList*
+ * 函数功能: 判断是否含有空子句，是返回1，不是返回0
+ * 返回值: int
+ */
+int emptyClause(SATList* cnf)
+{
+	SATList* lp = cnf;
+	while (lp != NULL)
+	{
+		if (lp->head == NULL) return 1;
+		lp = lp->next;
+	}
+	return 0;
+}
+
+/*
+ * 函数名称: CopyClause
+ * 接受参数: SATList*,SATList*
+ * 函数功能: 将链表b的值复制到链表a中
+ * 返回值: void
+ */
+void CopyClause(SATList*& a, SATList* b)
+{
+	SATList* lpa,*lpb;
+	SATNode* tpa,*tpb;
+	a = (SATList*)malloc(sizeof(SATList));
+	a->head = (SATNode*)malloc(sizeof(SATNode));
+	a->next = NULL;
+	a->head->next = NULL;
+	for (lpb = b, lpa = a; lpb != NULL; lpb = lpb->next, lpa = lpa->next)
+	{
+		for (tpb = lpb->head, tpa = lpa->head; tpb != NULL; tpb = tpb->next, tpa = tpa->next)
+		{
+			tpa->data = tpb->data;
+			tpa->next = (SATNode*)malloc(sizeof(SATNode));
+			tpa->next->next = NULL;
+			if (tpb->next == NULL)
+			{
+				free(tpa->next);
+				tpa->next = NULL;
+			}
+		}
+		lpa->next = (SATList*)malloc(sizeof(SATList));
+		lpa->next->head = (SATNode*)malloc(sizeof(SATNode));
+		lpa->next->next = NULL;
+		lpa->next->head->next = NULL;
+		if (lpb->next == NULL)
+		{
+			free(lpa->next->head);
+			free(lpa->next);
+			lpa->next = NULL;
+		}
+	}
+}
+
+/*
+* 函数名称: DPLL
+* 接受参数: SATList *
+* 函数功能: 求解SAT问题，给出满足条件时的一个式子,若有解则返回1，无解返回0
+* 返回值: int
+*/
+//int ReadFile(SATList*& cnf);
+//void destroyClause(SATList*& cnf);
+//int isUnitClause(SATNode* cnf);
+//int evaluateClause(SATNode* cnf, int v[]);
+//int removeClause(SATList*& cnf, SATList*& root);
+//int removeNode(SATNode*& cnf, SATNode*& head);
+//int addClause(SATList* cnf, SATList*& root);
+//int emptyClause(SATList* cnf);
+//int DPLL(SATList*& cnf, int value[]);
+//void CopyClause(SATList*& a, SATList* b);
+//int WriteFile(int result, double time, int value[]);
+//void CreateBinary(int size);
+//int SolvePuzzle(int chess[], int size);
+status DpllSolver(SATList* s, int* truth_table)
+{
+    SATList* s_tmp = s;
+    SATList* unit_clause = IsUnitClause(s_tmp);    // 获得单子句
+
+    // 单子句规则
+    while(unit_clause)
+    {
+		// ios_base::sync_with_stdio(false);
+		// cout<<"数据整理中,请稍候......\r";
+		// printf("数据整理中,请稍候......\r");
+        RecordTruth(unit_clause, truth_table);        // 记录单子句中的变元的真值
+        int var = unit_clause->head->data;
+        RemoveVar(s, var);
+
+        if(s->next == NULL) return FOUND;             // S为空
+        else if(IsEmptyClause(s))   return NOTFOUND;  // S中存在空子句
+
+        s_tmp = s;
+        unit_clause = IsUnitClause(s_tmp);            // 还存在单子句则继续循环
+    }
+	// ios_base::sync_with_stdio(false);
+	// cout<<"运算中,请稍候.......\r";
+	// printf("运算中,请稍候........\r");
+    // 分裂策略
+    int var = PickVar(s);                                                  // 选变元
+    if(DpllSolver(AddClause(CopyS(s), var), truth_table))  return FOUND;   // 变元的真值选对了,此处传入S的拷贝
+    return DpllSolver(AddClause(s, -var), truth_table);                    // 变元的真值选错了
+}
+
+SATList* CopyS(SATList* s)
+{
+    SATList *s_new, *c_tmp, *s_origin = s->next;
+
+    // 创建root
+    s_new = (SATList *)malloc(sizeof(SATList));
+    s_new->head = NULL;
+    c_tmp = s_new;
+
+    // 循环创建子句
+    while(s_origin)
+    {
+        c_tmp->next = CopyClause(s_origin);  // 复制整个子句
+        c_tmp = c_tmp->next;                 // 下一个
+        s_origin = s_origin->next;
+    }
+    return s_new;
+}
+
+SATList* CopyClause(SATList* s)
+{
+    SATList* clause_tmp;
+    SATNode *literal_tmp, *s_tmp = s->head;
+
+    // 创建子句结点
+    clause_tmp = (SATList *)malloc(sizeof(SATList));
+    clause_tmp->next = NULL;
+    clause_tmp->head = NULL;
+
+    // 创建第一个文字结点
+    if(s_tmp)
+    {
+        literal_tmp = (SATNode *)malloc(sizeof(SATNode));
+        literal_tmp->data = s_tmp->data;
+        literal_tmp->next = NULL;
+        s_tmp = s_tmp->next;
+        clause_tmp->head = literal_tmp;
+    }
+
+    // 循环创建之后的文字结点
+    while(s_tmp)
+    {
+        literal_tmp->next = (SATNode *)malloc(sizeof(SATNode));
+        literal_tmp->next->data = s_tmp->data;
+        literal_tmp->next->next = NULL;
+        literal_tmp = literal_tmp->next;
+        s_tmp = s_tmp->next;
+    }
+    return clause_tmp;
+}
+
+SATList* AddClause(SATList* s, int var)
+{
+    SATList* c_tmp;
+    c_tmp = (SATList *)malloc(sizeof(SATList));
+    c_tmp->head = (SATNode *)malloc(sizeof(SATNode));
+    c_tmp->head->data = var;
+    c_tmp->head->next = NULL;
+    c_tmp->next = s->next;
+    s->next = c_tmp;
+    return s;
+}
+
+int PickVar(SATList* s)
+{
+    int var = s->next->head->data;
+    return var;
+}
+
+status RemoveVar(SATList* s, int var)
+{
+    SATList *c_tmp = s->next, *last_c_tmp = s;
+    while(c_tmp)                                     // 循环读取每一个子句
+    {
+        c_tmp = DeleteLiteral(c_tmp, var);           // 删除子句里所有的负变元，如果遇到了正变元则返回NULL
+        if(c_tmp == NULL)                            // 遇到了正变元
+        {
+            c_tmp = DeleteClause(last_c_tmp->next);  // 与正变元相同则删除子句
+            last_c_tmp->next = c_tmp;
+            continue;
+        }
+        if(c_tmp == NULL)   break;
+        last_c_tmp = c_tmp;                          // 下一个子句
+        c_tmp = c_tmp->next;
+    }
+    return OK;
+}
+
+SATList* DeleteClause(SATList* s)
+{
+    SATList* c_tmp = s;
+    SATNode* l;
+    while(s->head)                     // 先删除子句中所有文字
+    {
+        l = s->head;
+        s->head = s->head->next;
+        free(l);
+    }
+    s = s->next;
+    free(c_tmp);                        // 再删除空子句
+    return s;
+}
+
+SATList* DeleteLiteral(SATList* s, int var)
+{
+    SATNode *l = s->head, *l_tmp;
+
+    // 处理第一个文字
+    if(l->data == -var)                  // 负变元
+    {
+        l_tmp = s->head->next;
+        free(l);
+        s->head = l_tmp;
+        return s;
+    }
+    else if(l->data == var) return NULL; // 正变元
+
+    // 循环处理接下来的文字
+    while(l)
+    {
+        if(l->next && l->next->data == -var)
+        {
+            l_tmp = l->next;
+            l->next = l->next->next;
+            free(l_tmp);
+        }
+        else if(l->next && l->next->data == var)  return NULL;
+        l = l->next;
+    }
+    return s;
+}
+
+status IsEmptyClause(SATList* s)
+{
+    SATList* c_tmp = s->next;
+    while(c_tmp)
+    {
+        if(!c_tmp->head) return YES;
+        c_tmp = c_tmp->next;
+    }
+    return NO;
+}
+
+status RecordTruth(SATList* s, int* truth_table)
+{
+    int idx = abs(s->head->data) - 1;   // 序号=绝对值-1
+    if(s->head->data > 0)  truth_table[idx] = 1;
+    else    truth_table[idx] = 0;
+    return OK;
+}
+
+SATList* IsUnitClause(SATList* s)
+{
+    SATList* c_tmp = s;
+    while(c_tmp)
+    {
+        if(c_tmp->head && !c_tmp->head->next)    return c_tmp;
+        c_tmp = c_tmp->next;
+    }
+    return NULL;
+}
+
+status Print(SATList* s)
+{
+    SATList* c_tmp = s->next;
+    SATNode* l_tmp;
+    printf("\n-----Start-----\n");
+    while(c_tmp)
+    {
+        l_tmp = c_tmp->head;
+        while(l_tmp)
+        {
+            printf("%d ", l_tmp->data);
+            l_tmp = l_tmp->next;
+        }
+        if(c_tmp->head)    printf("\n");
+        else    printf("空\n");
+        c_tmp = c_tmp->next;
+    }
+    printf("------End------\n");
+    return OK;
+}
+//
+int DPLL(SATList*& cnf, int value[])
+{
+	SATList* tp = cnf, * lp = cnf, * sp;
+	SATNode* dp;
+	int* count, i, MaxWord, max, re; //count记录每个文字出现次数,MaxWord记录出现最多次数的文字
+	count = (int*)malloc(sizeof(int) * (boolCount * 2 + 1));
+FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //找到表中的单子句
+	if (tp != NULL)
+	{
+		// ios_base::sync_with_stdio(false);
+		// cout<<"数据处理中,请稍候.....\r";
+		// printf("数据整理中,请稍候......\r");
+		//单子句规则简化
+		if (tp->head->data > 0) value[tp->head->data] = 1;
+		else value[-tp->head->data] = 0;
+		re = tp->head->data;
+		for (lp = cnf; lp != NULL; lp = sp)
+		{
+			sp = lp->next;
+
+			//查找含有核心文字的句子
+			for (dp = lp->head; dp != NULL; dp = dp->next)
+			{
+				if (dp->data == re)
+				{
+					removeClause(lp, cnf);  //删除子句，简化式子
+					break;
+				}
+				if (dp->data == -re)
+				{
+					removeNode(dp, lp->head);  //删除文字，简化子句
+					break;
+				}
+			}
+		}
+		//极简化规则简化后
+		if (cnf == NULL)
+		{
+			free(count);
+			return 1;
+		}
+		else if (emptyClause(cnf))
+		{
+			free(count);
+			destroyClause(cnf);
+			return 0;
+		}
+		tp = cnf;
+		// ios_base::sync_with_stdio(false);
+		// cout<<"运算中,请稍候........\r";
+		// printf("运算中,请稍候........\r");
+		goto FIND;  //继续简化
+	}
+	for (i = 0; i <= boolCount * 2; i++) count[i] = 0;  //初始化
+
+	//计算子句中各文字出现次数
+	for (lp = cnf; lp != NULL; lp = lp->next)
+	{
+		for (dp = lp->head; dp != NULL; dp = dp->next)
+		{
+			if (dp->data > 0) count[dp->data]++;
+			else count[boolCount - dp->data]++;
+		}
+	}
+	max = 0;
+
+	//找到出现次数最多的正文字
+	for (i = 2; i <= boolCount; i++)
+	{
+		if (max < count[i])
+		{
+			max = count[i];
+			MaxWord = i;
+		}
+	}
+
+	if (max == 0)
+	{
+		//若没有出现正文字,找到出现次数最多的负文字
+		for (i = boolCount + 1; i <= boolCount * 2; i++)
+		{
+			if (max < count[i])
+			{
+				max = count[i];
+				MaxWord = -i;
+			}
+		}
+	}
+	free(count);
+	lp = (SATList*)malloc(sizeof(SATList));
+	lp->head = (SATNode*)malloc(sizeof(SATNode));
+	lp->head->data = MaxWord;
+	lp->head->next = NULL;
+	lp->next = NULL;
+	CopyClause(tp, cnf);
+	addClause(lp, tp);
+	if (DPLL(tp, value) == 1) return 1;  //在第一分支中搜索
+	destroyClause(tp);
+	lp = (SATList*)malloc(sizeof(SATList));
+	lp->head = (SATNode*)malloc(sizeof(SATNode));
+	lp->head->data = -MaxWord;
+	lp->head->next = NULL;
+	lp->next = NULL;
+	addClause(lp, cnf);
+	re = DPLL(cnf, value); //回溯到执行分支策略的初态进入另一分支
+	destroyClause(cnf);
+	return re;
+}

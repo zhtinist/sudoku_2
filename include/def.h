@@ -74,7 +74,7 @@ typedef struct DataNode{
 }DataNode;
 
 typedef struct HeadNode{
-    int num = 0;
+    int num = 0;//多了一个统计元素个数的量
     struct HeadNode* down;//头结点向下
     struct DataNode* right;//同一个子句中结点向右指针
 }HeadNode;

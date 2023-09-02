@@ -41,7 +41,7 @@ int cnfmaker(char chess[],char* fileName){
 	SATNode* dp;
 	int* remember, i, j, k, rol;
 	char name[200];
-	int a[10]={0,5,6,7,8,9,8,7,6,5}; 
+	int a[10]={0,5,6,7,8,9,8,7,6,5}; //每行孔数
 	int b[9][9]={{0,0,0,0,0,0,0,0,0},
 				 {-1,0,1,0,0,0,0,0,0},
 				 {-2,-1,0,1,2,0,0,0,0},
@@ -51,9 +51,9 @@ int cnfmaker(char chess[],char* fileName){
 				 {-2,-1,0,1,2,0,0,0,0},
 				 {-1,0,1,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0}
-				};
+				};//对称回文
 	int c[10]={0,1,3,5,7,9,7,5,3,1};			
-	int d[10]={0,5,11,18,26,35,43,50,56,61};
+	int d[10]={0,5,11,18,26,35,43,50,56,61};//前n行总孔数
 	int num=0;
 	FILE* fp;
 	if(!(fp=fopen(fileName,"w"))){
@@ -70,6 +70,7 @@ int cnfmaker(char chess[],char* fileName){
 		fprintf(fp,"%d %d\n",resort(receive[i]),0);
 	}
 	//基本条件
+	//每个孔都有数字
 	for(i=1;i<=9;i++){
 		for(j=1;j<=a[i];j++){
 			for(k=1;k<=9;k++){
@@ -78,6 +79,7 @@ int cnfmaker(char chess[],char* fileName){
 			fprintf(fp,"%d\n",0);
 		}
 	}
+	//格约束::每一空仅填一个数字
 	for(i=1;i<=9;i++){
 		for(j=1;j<=a[i];j++){
 			for(k=1;k<=8;k++){
@@ -87,7 +89,7 @@ int cnfmaker(char chess[],char* fileName){
 			}
 		}
 	}
-	//
+	//每行数字必填数字
 	for(i=1;i<=9;i++){
 		for(j=1;j<=c[i];j++){
 			for (k=1;k<=a[i];k++){
@@ -96,6 +98,8 @@ int cnfmaker(char chess[],char* fileName){
 			fprintf(fp,"%d\n",0);
 		}
 		int m,n,l;
+
+		//每行数字不重复
 		for(m=1;m<=a[i]-1;m++){
 			for(n=m+1;n<=a[i];n++){
 				for(l=1;l<=9;l++){
@@ -107,7 +111,8 @@ int cnfmaker(char chess[],char* fileName){
 	}
 	//约束条件
 	int cons1[10][2]={{1,6},{2,6},{3,6},{4,6},{2,7},{3,7},{4,7},{3,8},{4,8},{4,9}};
-	int cons_1[5]={110,120,130,140,150};
+	int cons_1[5]={110,120,130,140,150};//坐标,方便循环的数组
+	//第n行约束数字选填
 	for(i=0;i<10;i++){
 		for(j=0;j<2;j++){
 			for(k=0;k<5;k++){
@@ -182,7 +187,8 @@ int cnfmaker(char chess[],char* fileName){
 	//左斜
 	fprintf(fp,"%d %d %d %d %d %d\n",resort(515),resort(415),resort(315),resort(215),resort(115),0);
 	int markl2[6]={610,520,420,320,220,120};
-	int markl_2[3]={4,5,6};
+	int markl_2[3]={4,5,6};//坐标
+	//左斜必填
 	for(i=0;i<3;i++){
 		for(j=0;j<6;j++){
 			fprintf(fp,"%d ",resort(markl2[j]+markl_2[i]));
@@ -438,7 +444,7 @@ int cnfmaker(char chess[],char* fileName){
 		fprintf(fp,"%d %d %d\n",-resort(770+i),-resort(590+i),0);
 		fprintf(fp,"%d %d %d\n",-resort(680+i),-resort(590+i),0);
 	}
-	//左斜约束条件
+	//左斜约束条件(数字选填)
 	int cons_l1[5]={510,410,310,210,110};
 	for(i=0;i<10;i++){
 		for(j=0;j<2;j++){
@@ -512,7 +518,7 @@ int cnfmaker(char chess[],char* fileName){
 		fprintf(fp,"%d\n",0);
 	}
 
-	//右斜
+	//右斜(必填数字)
 	fprintf(fp,"%d %d %d %d %d %d\n",resort(155),resort(265),resort(375),resort(485),resort(595),0);
 	int markr1[5]={150,260,370,480,590};
 	int markr2[6]={140,250,360,470,580,680};
@@ -636,7 +642,7 @@ int cnfmaker(char chess[],char* fileName){
 		}
 	}
 
-	//右斜约束
+	//右斜约束(选填)
 	int cons_r1[5]={150,260,370,480,590};
 	for(i=0;i<10;i++){
 		for(j=0;j<2;j++){
@@ -779,11 +785,6 @@ bool las_vegas(int n){
 	if(result==1) return true;
 	else return false;
 }
-// bool las_Vegas(int n){
-// 	Sleep(1000);
-// 	Sleep(1000);
-// 	return true;
-// }
 
 
 

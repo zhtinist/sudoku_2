@@ -69,6 +69,7 @@ int WriteFileAgain(int result, double time, int value[])
 			else fprintf(fp, "%d ", -i);
 		}
 	}
+	if(result!=0)
 	fprintf(fp, "\nt %lf", time * 1000);  //运行时间/毫秒
 	fclose(fp);
 	return 1;
