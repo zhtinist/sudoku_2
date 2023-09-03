@@ -2,10 +2,10 @@
 #include"create_new_game.h"
 
 /*
-* º¯ÊıÃû³Æ: CreateSudoku
-* ½ÓÊÜ²ÎÊı: int*
-* º¯Êı¹¦ÄÜ:´òÓ¡¶ÔÓ¦Êı¶À
-* ·µ»ØÖµ: void
+* å‡½æ•°åç§°: CreateSudoku
+* æ¥å—å‚æ•°: int*
+* å‡½æ•°åŠŸèƒ½:æ‰“å°å¯¹åº”æ•°ç‹¬
+* è¿”å›å€¼: void
 */
 void CreateSudoku(int a[]){
 	printf("         / \\ / \\ / \\ / \\ / \\  \n");
@@ -31,17 +31,17 @@ void CreateSudoku(int a[]){
 
 
 /*
-cnfmaker ¸ù¾İ¶ÁÈëµÄÆåÅÌÉú³É¶ÔÓ¦µÄÔ¼ÊøÌõ¼şcnf
+cnfmaker æ ¹æ®è¯»å…¥çš„æ£‹ç›˜ç”Ÿæˆå¯¹åº”çš„çº¦æŸæ¡ä»¶cnf
 */
 int cnfmaker(char chess[],char* fileName){
 //	char SE[88];
-//	printf("ÇëÊäÈë´ı½â¾ö·äÎÑÊı¶À\n");
+//	printf("è¯·è¾“å…¥å¾…è§£å†³èœ‚çªæ•°ç‹¬\n");
 //	scanf("%s",SE);
 	SATList* cnf = NULL, * lp;
 	SATNode* dp;
 	int* remember, i, j, k, rol;
 	char name[200];
-	int a[10]={0,5,6,7,8,9,8,7,6,5}; //Ã¿ĞĞ¿×Êı
+	int a[10]={0,5,6,7,8,9,8,7,6,5}; //æ¯è¡Œå­”æ•°
 	int b[9][9]={{0,0,0,0,0,0,0,0,0},
 				 {-1,0,1,0,0,0,0,0,0},
 				 {-2,-1,0,1,2,0,0,0,0},
@@ -51,13 +51,13 @@ int cnfmaker(char chess[],char* fileName){
 				 {-2,-1,0,1,2,0,0,0,0},
 				 {-1,0,1,0,0,0,0,0,0},
 				 {0,0,0,0,0,0,0,0,0}
-				};//¶Ô³Æ»ØÎÄ
+				};//å¯¹ç§°å›æ–‡
 	int c[10]={0,1,3,5,7,9,7,5,3,1};			
-	int d[10]={0,5,11,18,26,35,43,50,56,61};//Ç°nĞĞ×Ü¿×Êı
+	int d[10]={0,5,11,18,26,35,43,50,56,61};//å‰nè¡Œæ€»å­”æ•°
 	int num=0;
 	FILE* fp;
 	if(!(fp=fopen(fileName,"w"))){
-		printf("ÎÄ¼ş´ò¿ª´íÎó!");
+		printf("æ–‡ä»¶æ‰“å¼€é”™è¯¯!");
 		return ERROR; 
 	}
 	for(i=5;i<66;i++){
@@ -69,8 +69,8 @@ int cnfmaker(char chess[],char* fileName){
 	for(i=0;receive[i]!=0;i++){
 		fprintf(fp,"%d %d\n",resort(receive[i]),0);
 	}
-	//»ù±¾Ìõ¼ş
-	//Ã¿¸ö¿×¶¼ÓĞÊı×Ö
+	//åŸºæœ¬æ¡ä»¶
+	//æ¯ä¸ªå­”éƒ½æœ‰æ•°å­—
 	for(i=1;i<=9;i++){
 		for(j=1;j<=a[i];j++){
 			for(k=1;k<=9;k++){
@@ -79,7 +79,7 @@ int cnfmaker(char chess[],char* fileName){
 			fprintf(fp,"%d\n",0);
 		}
 	}
-	//¸ñÔ¼Êø::Ã¿Ò»¿Õ½öÌîÒ»¸öÊı×Ö
+	//æ ¼çº¦æŸ::æ¯ä¸€ç©ºä»…å¡«ä¸€ä¸ªæ•°å­—
 	for(i=1;i<=9;i++){
 		for(j=1;j<=a[i];j++){
 			for(k=1;k<=8;k++){
@@ -89,7 +89,7 @@ int cnfmaker(char chess[],char* fileName){
 			}
 		}
 	}
-	//Ã¿ĞĞÊı×Ö±ØÌîÊı×Ö
+	//æ¯è¡Œæ•°å­—å¿…å¡«æ•°å­—
 	for(i=1;i<=9;i++){
 		for(j=1;j<=c[i];j++){
 			for (k=1;k<=a[i];k++){
@@ -99,7 +99,7 @@ int cnfmaker(char chess[],char* fileName){
 		}
 		int m,n,l;
 
-		//Ã¿ĞĞÊı×Ö²»ÖØ¸´
+		//æ¯è¡Œæ•°å­—ä¸é‡å¤
 		for(m=1;m<=a[i]-1;m++){
 			for(n=m+1;n<=a[i];n++){
 				for(l=1;l<=9;l++){
@@ -109,10 +109,10 @@ int cnfmaker(char chess[],char* fileName){
 			}
 		}
 	}
-	//Ô¼ÊøÌõ¼ş
+	//çº¦æŸæ¡ä»¶
 	int cons1[10][2]={{1,6},{2,6},{3,6},{4,6},{2,7},{3,7},{4,7},{3,8},{4,8},{4,9}};
-	int cons_1[5]={110,120,130,140,150};//×ø±ê,·½±ãÑ­»·µÄÊı×é
-	//µÚnĞĞÔ¼ÊøÊı×ÖÑ¡Ìî
+	int cons_1[5]={110,120,130,140,150};//åæ ‡,æ–¹ä¾¿å¾ªç¯çš„æ•°ç»„
+	//ç¬¬nè¡Œçº¦æŸæ•°å­—é€‰å¡«
 	for(i=0;i<10;i++){
 		for(j=0;j<2;j++){
 			for(k=0;k<5;k++){
@@ -184,11 +184,11 @@ int cnfmaker(char chess[],char* fileName){
 		fprintf(fp,"%d\n",0);
 	}
 
-	//×óĞ±
+	//å·¦æ–œ
 	fprintf(fp,"%d %d %d %d %d %d\n",resort(515),resort(415),resort(315),resort(215),resort(115),0);
 	int markl2[6]={610,520,420,320,220,120};
-	int markl_2[3]={4,5,6};//×ø±ê
-	//×óĞ±±ØÌî
+	int markl_2[3]={4,5,6};//åæ ‡
+	//å·¦æ–œå¿…å¡«
 	for(i=0;i<3;i++){
 		for(j=0;j<6;j++){
 			fprintf(fp,"%d ",resort(markl2[j]+markl_2[i]));
@@ -241,7 +241,7 @@ int cnfmaker(char chess[],char* fileName){
 		fprintf(fp,"%d\n",0);
 	}
 	fprintf(fp,"%d %d %d %d %d %d\n",resort(955),resort(865),resort(775),resort(685),resort(595),0);
-	//ÈÎÁ½¸ñ²»ÄÜÌîÍ¬Ò»¸öÊı×ÖÔ¼Êø£¨×óĞ±£©
+	//ä»»ä¸¤æ ¼ä¸èƒ½å¡«åŒä¸€ä¸ªæ•°å­—çº¦æŸï¼ˆå·¦æ–œï¼‰
 	for(i=1;i<=9;i++){
 		fprintf(fp,"%d %d %d\n",-resort(510+i),-resort(410+i),0);
 		fprintf(fp,"%d %d %d\n",-resort(510+i),-resort(310+i),0);
@@ -444,7 +444,7 @@ int cnfmaker(char chess[],char* fileName){
 		fprintf(fp,"%d %d %d\n",-resort(770+i),-resort(590+i),0);
 		fprintf(fp,"%d %d %d\n",-resort(680+i),-resort(590+i),0);
 	}
-	//×óĞ±Ô¼ÊøÌõ¼ş(Êı×ÖÑ¡Ìî)
+	//å·¦æ–œçº¦æŸæ¡ä»¶(æ•°å­—é€‰å¡«)
 	int cons_l1[5]={510,410,310,210,110};
 	for(i=0;i<10;i++){
 		for(j=0;j<2;j++){
@@ -518,7 +518,7 @@ int cnfmaker(char chess[],char* fileName){
 		fprintf(fp,"%d\n",0);
 	}
 
-	//ÓÒĞ±(±ØÌîÊı×Ö)
+	//å³æ–œ(å¿…å¡«æ•°å­—)
 	fprintf(fp,"%d %d %d %d %d %d\n",resort(155),resort(265),resort(375),resort(485),resort(595),0);
 	int markr1[5]={150,260,370,480,590};
 	int markr2[6]={140,250,360,470,580,680};
@@ -577,7 +577,7 @@ int cnfmaker(char chess[],char* fileName){
 	}
 	fprintf(fp,"%d %d %d %d %d %d\n",resort(515),resort(615),resort(715),resort(815),resort(915),0);
 
-	//ÈÎÁ½¸ñ²»ÄÜÌîÍ¬Ò»¸öÊı×ÖÔ¼Êø£¨ÓÒĞ±£©
+	//ä»»ä¸¤æ ¼ä¸èƒ½å¡«åŒä¸€ä¸ªæ•°å­—çº¦æŸï¼ˆå³æ–œï¼‰
 	for(i=1;i<=9;i++){
 		for(j=0;j<4;j++){
 			for(k=j+1;k<5;k++){
@@ -642,7 +642,7 @@ int cnfmaker(char chess[],char* fileName){
 		}
 	}
 
-	//ÓÒĞ±Ô¼Êø(Ñ¡Ìî)
+	//å³æ–œçº¦æŸ(é€‰å¡«)
 	int cons_r1[5]={150,260,370,480,590};
 	for(i=0;i<10;i++){
 		for(j=0;j<2;j++){
@@ -743,7 +743,7 @@ int num_position(char* input,int *output){
     char* pp=input+4;
     int pos=0;
     int p[12][12]={0};
-    //¶ÁÈ¡Êı¾İ
+    //è¯»å–æ•°æ®
     for(int i=1;i<=5;i++) p[1][i]=*(++pp)-'0';
     for(int i=1;i<=6;i++) p[2][i]=*(++pp)-'0';
     for(int i=1;i<=7;i++) p[3][i]=*(++pp)-'0';
@@ -753,7 +753,7 @@ int num_position(char* input,int *output){
     for(int i=1;i<=7;i++) p[7][i]=*(++pp)-'0';
     for(int i=1;i<=6;i++) p[8][i]=*(++pp)-'0';
     for(int i=1;i<=5;i++) p[9][i]=*(++pp)-'0';
-    //´¦ÀíÊı¾İ
+    //å¤„ç†æ•°æ®
     int num=0;
     for(int i=0;i<12;i++) 
         for(int j=0;j<12;j++)
@@ -819,29 +819,29 @@ bool las_vegas(int n){
 #define WRONG -1
 static int T = 0;
 
-//¸ù¾İholesÀ´ÍÚ¶´
-//´Ëº¯ÊıÊä³öÊı¶À³õÅÌ£¬Í¬Ê±·µ»Ø½âÎöºóµÄ.cnfÎÄ¼ş
+//æ ¹æ®holesæ¥æŒ–æ´
+//æ­¤å‡½æ•°è¾“å‡ºæ•°ç‹¬åˆç›˜ï¼ŒåŒæ—¶è¿”å›è§£æåçš„.cnfæ–‡ä»¶
 string createSudokuToFile(int holes, int array[ROW][COL]) {
     int sudoku[ROW][COL]={0};
     int starting_grid[ROW][COL]={0};
-    createSudoku(sudoku);//Éú³ÉÊı¶ÀÖÕÅÌ
-    createStartinggrid(sudoku,starting_grid,holes);//Éú³É³õÅÌ
+    createSudoku(sudoku);//ç”Ÿæˆæ•°ç‹¬ç»ˆç›˜
+    createStartinggrid(sudoku,starting_grid,holes);//ç”Ÿæˆåˆç›˜
     memcpy(array, starting_grid, ROW*COL*sizeof(int));
-    cout << "³õÊ¼»¯ºóÊı¶À³õÅÌÎª£º" << endl;
-    print(starting_grid);//Êä³ö³õÅÌ
-    //×ª»¯ÎªcnfÎÄ¼ş
+    cout << "åˆå§‹åŒ–åæ•°ç‹¬åˆç›˜ä¸ºï¼š" << endl;
+    print(starting_grid);//è¾“å‡ºåˆç›˜
+    //è½¬åŒ–ä¸ºcnfæ–‡ä»¶
     string filename = ToCnf(starting_grid,holes);
     return filename;
 }
 
-int Digit(int a[][COL], int i, int j) {//µİ¹éÌî³äÊı¶ÀÔªËØ
+int Digit(int a[][COL], int i, int j) {//é€’å½’å¡«å……æ•°ç‹¬å…ƒç´ 
     if (i < ROW && j < COL) {
         int x,y,k;
-        int check[COL+1]={CORRECT};//ÓÃÓÚÅÅ³ıÒÑ¾­Ê¹ÓÃ¹ıµÄµÄÊı×Ö
+        int check[COL+1]={CORRECT};//ç”¨äºæ’é™¤å·²ç»ä½¿ç”¨è¿‡çš„çš„æ•°å­—
         for(x = 0 ; x < i ; x++)
-            check[a[x][j]] = WRONG;//ÁĞÒÑÊ¹ÓÃµÄÊı×ÖÖÃÎªWRONG
+            check[a[x][j]] = WRONG;//åˆ—å·²ä½¿ç”¨çš„æ•°å­—ç½®ä¸ºWRONG
         for(x = 0 ; x < j ; x++)
-            check[a[i][x]] = WRONG;//ĞĞÊ¹ÓÃ¹ıµÄÊı×ÖÖÃÎªWRONG
+            check[a[i][x]] = WRONG;//è¡Œä½¿ç”¨è¿‡çš„æ•°å­—ç½®ä¸ºWRONG
         for(x = i/3*3 ; x <= i; x++) {
             if(x == i)
                 for(y = j/3*3 ; y < j; y++)
@@ -852,7 +852,7 @@ int Digit(int a[][COL], int i, int j) {//µİ¹éÌî³äÊı¶ÀÔªËØ
         }
 
         int flag = 0;
-        for(k = 1; k <= COL && flag == 0 ; k++){//´ÓcheckÊı×éÖĞ²éÕÒ°²È«µÄÊı×Ö
+        for(k = 1; k <= COL && flag == 0 ; k++){//ä»checkæ•°ç»„ä¸­æŸ¥æ‰¾å®‰å…¨çš„æ•°å­—
             if(check[k] == CORRECT){
                 flag = 1;
                 a[i][j] = k;
@@ -874,7 +874,7 @@ int Digit(int a[][COL], int i, int j) {//µİ¹éÌî³äÊı¶ÀÔªËØ
     return CORRECT;
 }
 
-void randomFirstRow(int a0[], int n) {//Ëæ»úÉú³ÉµÚÒ»ĞĞ
+void randomFirstRow(int a0[], int n) {//éšæœºç”Ÿæˆç¬¬ä¸€è¡Œ
     int i,j;
     srand((unsigned)time(nullptr));
     for( i = 0 ; i < n ; i++){
@@ -890,19 +890,19 @@ void randomFirstRow(int a0[], int n) {//Ëæ»úÉú³ÉµÚÒ»ĞĞ
     }
 }
 
-void createSudoku(int a[][COL]){ //Éú³ÉÊı¶À
-    randomFirstRow(a[0],COL);//Ëæ»úÉú³ÉµÚÒ»ĞĞ
-    Digit(a,1,0);//µİ¹éÉú³ÉºóiĞĞ
+void createSudoku(int a[][COL]){ //ç”Ÿæˆæ•°ç‹¬
+    randomFirstRow(a[0],COL);//éšæœºç”Ÿæˆç¬¬ä¸€è¡Œ
+    Digit(a,1,0);//é€’å½’ç”Ÿæˆåiè¡Œ
 }
 
-void createStartinggrid(const int a[][COL], int b[][COL], int numDigits) {//Ëæ»úÉú³É³õÅÌ
+void createStartinggrid(const int a[][COL], int b[][COL], int numDigits) {//éšæœºç”Ÿæˆåˆç›˜
     int i,j,k;
     srand((unsigned)time(nullptr));
     for( i = 0; i < ROW ; i ++)
         for( j = 0; j < COL ; j++)
             b[i][j] = a[i][j];
 
-    //int c[numDigits][2];//´Ë´¦¿ÉÒÔ²ÉÓÃc++ÖĞµÄnew¶¯Ì¬Îª¶şÎ¬Êı×é·ÖÅäÄÚ´æ
+    //int c[numDigits][2];//æ­¤å¤„å¯ä»¥é‡‡ç”¨c++ä¸­çš„newåŠ¨æ€ä¸ºäºŒç»´æ•°ç»„åˆ†é…å†…å­˜
     int** c = new int* [numDigits];
     for(int i = 0; i < numDigits; i++){
         c[i] = new int [2];
@@ -928,7 +928,7 @@ void createStartinggrid(const int a[][COL], int b[][COL], int numDigits) {//Ëæ»ú
     }
 }
 
-void print(const int a[][COL]){//´òÓ¡Êı¶ÀÊı×é
+void print(const int a[][COL]){//æ‰“å°æ•°ç‹¬æ•°ç»„
     int i,j;
     for( i = 0 ; i < ROW ; i++){
         for( j = 0 ; j < COL ; j++)
@@ -938,7 +938,7 @@ void print(const int a[][COL]){//´òÓ¡Êı¶ÀÊı×é
 }
 
 string ToCnf(int a[][COL],int holes) {
-    ofstream in (".\\sudoku.cnf");//¶¨ÒåÊäÈëÎÄ¼ş
+    ofstream in (".\\sudoku.cnf");//å®šä¹‰è¾“å…¥æ–‡ä»¶
     if(!in.is_open())
         cout<<"can't open!\n";
     in<<"p"<<" "<<"cnf"<<" "<<729<<" "<<8829+81-holes<<" "<<endl;
@@ -994,5 +994,5 @@ string ToCnf(int a[][COL],int holes) {
                                    << 0 - ((3*i+k)*100 + (3*j+l)*10 + z) << ' ' << 0 <<endl;
     }
     in.close();
-    return ".\\sudoku.cnf";//·µ»ØÒ»¸östringÀàĞÍµÄ¶ÔÏó
+    return ".\\sudoku.cnf";//è¿”å›ä¸€ä¸ªstringç±»å‹çš„å¯¹è±¡
 }

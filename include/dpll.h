@@ -2,51 +2,51 @@
 extern int FunNum;
 
 bool DPLL(HeadNode* L, int* book){
-    int SC;//´æ´¢µ¥×Ó¾ä(SingleClauseµÄËõĞ´)
+    int SC;//å­˜å‚¨å•å­å¥(SingleClauseçš„ç¼©å†™)
     //cout << ++TestNum << endl;
     //printList(L);
     while(SC = isHaveSingleClause(L)){
-        //cout << "2-" << TestNum << " ±¾´ÎÑ­»·ÒªÉ¾³ıµÄÎª:" << SC << endl;
+        //cout << "2-" << TestNum << " æœ¬æ¬¡å¾ªç¯è¦åˆ é™¤çš„ä¸º:" << SC << endl;
         if(SC > 0) book[SC] = 1;
-        else if(SC < 0) book[0-SC] = -1;//ÀıÈç£ºbook[-(-2)] = -1±íÊ¾2´ú±íµÄ±äÔªÈ¡¸ºÖµ£¬¼´-2
-        SimplifyCnf(L, SC);//¸ù¾İµ¥×Ó¾ä´«²¥²ßÂÔ¼ò»¯µ¥×Ó¾ä
+        else if(SC < 0) book[0-SC] = -1;//ä¾‹å¦‚ï¼šbook[-(-2)] = -1è¡¨ç¤º2ä»£è¡¨çš„å˜å…ƒå–è´Ÿå€¼ï¼Œå³-2
+        SimplifyCnf(L, SC);//æ ¹æ®å•å­å¥ä¼ æ’­ç­–ç•¥ç®€åŒ–å•å­å¥
        //printList(L);
         if(isemptyCnf(L)) return TRUE;
         else if(isHaveEmptyClause(L)) return FALSE;
     }
     //int v = SelectWord(L);
-    int v = SelectWord2(L);//²ÉÓÃ×î¶Ì×Ó¾äÓÅÏÈÑ¡È¡¹æÔò½øĞĞÑ¡È¡±äÔª
-    //cout << "Õâ´ÎÑ¡È¡µÄ±äÔªÎª£º" << v << endl;
+    int v = SelectWord2(L);//é‡‡ç”¨æœ€çŸ­å­å¥ä¼˜å…ˆé€‰å–è§„åˆ™è¿›è¡Œé€‰å–å˜å…ƒ
+    //cout << "è¿™æ¬¡é€‰å–çš„å˜å…ƒä¸ºï¼š" << v << endl;
     HeadNode* temL = CopyList(L);
     if(DPLL(merge(L, v), book)) return TRUE;
     bool result = DPLL(merge(temL, 0-v), book);
-    //É¾³ıtemLµÄÄÚÈİ¿Õ¼ä
+    //åˆ é™¤temLçš„å†…å®¹ç©ºé—´
     FreeList(temL);
     return result;
 }
 
-bool NewDPLL(HeadNode* L, int* book){//·Çµİ¹é°æ±¾DPLLËã·¨
+bool NewDPLL(HeadNode* L, int* book){//éé€’å½’ç‰ˆæœ¬DPLLç®—æ³•
     stack<HeadNode*> S;
-    HeadNode* ListL[10000] = {nullptr}; int i = 0;//ListLÓÃÀ´¼ÇÂ¼Ã¿´Î¸Ä±äµÄÁ´±í½áµãÄÚÈİ
+    HeadNode* ListL[10000] = {nullptr}; int i = 0;//ListLç”¨æ¥è®°å½•æ¯æ¬¡æ”¹å˜çš„é“¾è¡¨ç»“ç‚¹å†…å®¹
     HeadNode* temL = nullptr;
     int v[10000]; int val;
     S.push(L);
     while(!S.empty()){
         while((L = S.top()) && (val = SingleSpread(L, book)) == NOMAL){
-            //cout << "Ñ­»·¿ªÊ¼" << endl; printList(L);
+            //cout << "å¾ªç¯å¼€å§‹" << endl; printList(L);
             temL = CopyList(L);
             ListL[i] = temL;
             v[i] = SelectWord2(L);
-            //cout << "Ñ¡È¡µÄ±äÔªÎª£º" << v[i] << endl;
+            //cout << "é€‰å–çš„å˜å…ƒä¸ºï¼š" << v[i] << endl;
             L = merge(L, v[i]);
             S.push(L);i++;
         }
-        //printList(L); cout << "Ñ­»·½áÊø" << endl;
+        //printList(L); cout << "å¾ªç¯ç»“æŸ" << endl;
         if(val == TRUE) return TRUE;
         S.pop();i--;
-        //cout << "´Ë´¦µÄ±äÔªÎª£º" << v[i] << endl;
+        //cout << "æ­¤å¤„çš„å˜å…ƒä¸ºï¼š" << v[i] << endl;
         FreeList(L);
-        //cout << "Õ»µÄ´óĞ¡Îª" << S.size() << endl;
+        //cout << "æ ˆçš„å¤§å°ä¸º" << S.size() << endl;
         if(!S.empty()){
             L = ListL[i]; S.pop();
             S.push(merge(L, -v[i]));
@@ -56,14 +56,14 @@ bool NewDPLL(HeadNode* L, int* book){//·Çµİ¹é°æ±¾DPLLËã·¨
 }
 
 int SingleSpread(HeadNode* L, int* book){
-    int SC;//´æ´¢µ¥×Ó¾ä(SingleClauseµÄËõĞ´)
+    int SC;//å­˜å‚¨å•å­å¥(SingleClauseçš„ç¼©å†™)
     //cout << ++TestNum << endl;
     //printList(L);
     while(SC = isHaveSingleClause(L)){
-        //cout << "2-" << TestNum << " ±¾´ÎÑ­»·ÒªÉ¾³ıµÄÎª:" << SC << endl;
+        //cout << "2-" << TestNum << " æœ¬æ¬¡å¾ªç¯è¦åˆ é™¤çš„ä¸º:" << SC << endl;
         if(SC > 0) book[SC] = 1;
-        else if(SC < 0) book[0-SC] = -1;//ÀıÈç£ºbook[-(-2)] = -1±íÊ¾2´ú±íµÄ±äÔªÈ¡¸ºÖµ£¬¼´-2
-        SimplifyCnf(L, SC);//¸ù¾İµ¥×Ó¾ä´«²¥²ßÂÔ¼ò»¯µ¥×Ó¾ä
+        else if(SC < 0) book[0-SC] = -1;//ä¾‹å¦‚ï¼šbook[-(-2)] = -1è¡¨ç¤º2ä»£è¡¨çš„å˜å…ƒå–è´Ÿå€¼ï¼Œå³-2
+        SimplifyCnf(L, SC);//æ ¹æ®å•å­å¥ä¼ æ’­ç­–ç•¥ç®€åŒ–å•å­å¥
        //printList(L);
         if(isemptyCnf(L)) return TRUE;
         else if(isHaveEmptyClause(L)) return FALSE;
@@ -71,9 +71,9 @@ int SingleSpread(HeadNode* L, int* book){
     return NOMAL;
 }
 
-//LÖĞ´æ´¢µÄºÏÇø·¶Ê½ÊÇ·ñº¬ÓĞµ¥×Ó¾ä£¨Ö»º¬ÓĞÒ»¸öÎÄ×ÖµÄ×Ó¾ä½Ğ×öµ¥×Ó¾ä£©
-//Èç¹ûº¬ÓĞµ¥×Ó¾ä£¬Ôò·µ»Øµ¥×Ó¾äµÄÖµ
-//Èç¹û²»º¬ÓĞµ¥×Ó¾ä£¬Ôò·µ»Ø0
+//Lä¸­å­˜å‚¨çš„åˆåŒºèŒƒå¼æ˜¯å¦å«æœ‰å•å­å¥ï¼ˆåªå«æœ‰ä¸€ä¸ªæ–‡å­—çš„å­å¥å«åšå•å­å¥ï¼‰
+//å¦‚æœå«æœ‰å•å­å¥ï¼Œåˆ™è¿”å›å•å­å¥çš„å€¼
+//å¦‚æœä¸å«æœ‰å•å­å¥ï¼Œåˆ™è¿”å›0
 int isHaveSingleClause(HeadNode* L){
     HeadNode* _pH = L->down;
     while(_pH){
@@ -83,10 +83,10 @@ int isHaveSingleClause(HeadNode* L){
     return 0;
 }
 
-//¸ù¾İµ¥×Ó¾äSC½øĞĞ»¯¼ò·¶Ê½L¡ª¡ªº¬ÓĞSCµÄ×Ó¾äÖ±½ÓÈ¥µô£¬º¬ÓĞ-SCµÄ×Ó¾äÖĞÈ¥µô-SCÕâ¸öÎÄ×Ö
+//æ ¹æ®å•å­å¥SCè¿›è¡ŒåŒ–ç®€èŒƒå¼Lâ€”â€”å«æœ‰SCçš„å­å¥ç›´æ¥å»æ‰ï¼Œå«æœ‰-SCçš„å­å¥ä¸­å»æ‰-SCè¿™ä¸ªæ–‡å­—
 void SimplifyCnf(HeadNode* L, int SC){
     HeadNode* _pH = L->down;
-    HeadNode* _fpH = L;//¼ÇÂ¼Ö®Ç°±éÀú¹ıµÄ½áµã
+    HeadNode* _fpH = L;//è®°å½•ä¹‹å‰éå†è¿‡çš„ç»“ç‚¹
     int flag;
     while(_pH){
         DataNode* _p = _pH->right;
@@ -94,7 +94,7 @@ void SimplifyCnf(HeadNode* L, int SC){
         flag = 0;
         while(_p){
             flag = 0;
-            if(_p->value == SC){//È¥µôÕâ¸ö×Ó¾ä£¨É¾³ıÒ»ĞĞ£©
+            if(_p->value == SC){//å»æ‰è¿™ä¸ªå­å¥ï¼ˆåˆ é™¤ä¸€è¡Œï¼‰
                 _fpH->down = _pH->down;
                 _p = _pH->right;
                 while(_p){
@@ -104,14 +104,14 @@ void SimplifyCnf(HeadNode* L, int SC){
                 }
                 L->num--;
                 flag = 1;
-                break;//Ìø¹ıÕâÒ»ĞĞ
+                break;//è·³è¿‡è¿™ä¸€è¡Œ
             }
-            else if(_p->value == 0-SC){//È¥µôÕâ¸öÎÄ×Ö£¨É¾³ıÒ»¸öµã£¬ĞèÒª¿¼ÂÇµÚÒ»¸ö½ÚµãµÄÌØÊâÇé¿ö£©
+            else if(_p->value == 0-SC){//å»æ‰è¿™ä¸ªæ–‡å­—ï¼ˆåˆ é™¤ä¸€ä¸ªç‚¹ï¼Œéœ€è¦è€ƒè™‘ç¬¬ä¸€ä¸ªèŠ‚ç‚¹çš„ç‰¹æ®Šæƒ…å†µï¼‰
                 if(_pH->right == _p){
-                    flag = 2;//µÚÒ»¸ö½áµã¾Í³öÏÖÄ¿±êÊı¾İ£¬ĞèÒªÉ¾³ı
+                    flag = 2;//ç¬¬ä¸€ä¸ªç»“ç‚¹å°±å‡ºç°ç›®æ ‡æ•°æ®ï¼Œéœ€è¦åˆ é™¤
                     _pH->right = _p->next;
                     _pH->num--;
-                    //cout << "µÚÒ»¸ö½áµã´¦µØÎÄ×ÖÉ¾³ıºónumµÄÖµÎª£º" << _pH->num << endl;
+                    //cout << "ç¬¬ä¸€ä¸ªç»“ç‚¹å¤„åœ°æ–‡å­—åˆ é™¤ånumçš„å€¼ä¸ºï¼š" << _pH->num << endl;
                 }
                 else{
                     flag = 3;
@@ -119,15 +119,15 @@ void SimplifyCnf(HeadNode* L, int SC){
                     _pH->num--;
                 }
             }
-            if(!flag){//Ã»ÓĞĞèÒªÉ¾³ıµÄ½Úµã
+            if(!flag){//æ²¡æœ‰éœ€è¦åˆ é™¤çš„èŠ‚ç‚¹
                 if(_fp != _p) _fp = _p;
                 _p = _p->next;
             }
-            else if(flag == 2){//É¾³ıµÄ½áµãÎªµÚÒ»¸ö½ÚµãµÄÇé¿ö´¦Àí
+            else if(flag == 2){//åˆ é™¤çš„ç»“ç‚¹ä¸ºç¬¬ä¸€ä¸ªèŠ‚ç‚¹çš„æƒ…å†µå¤„ç†
                 _p = _pH->right;
                 _fp = _p;
             }
-            else if(flag == 3){//É¾³ıµÄ½Úµã²»ÊÇµÚÒ»¸ö£¬ÔÚÖĞ¼ä
+            else if(flag == 3){//åˆ é™¤çš„èŠ‚ç‚¹ä¸æ˜¯ç¬¬ä¸€ä¸ªï¼Œåœ¨ä¸­é—´
                 delete _p;
                 _p = _fp->next;
             } 
@@ -143,13 +143,13 @@ void SimplifyCnf(HeadNode* L, int SC){
     }
 }
 
-//LÖĞ´æ´¢µÄ·¶Ê½ÊÇ·ñÎª¿Õ·¶Ê½
+//Lä¸­å­˜å‚¨çš„èŒƒå¼æ˜¯å¦ä¸ºç©ºèŒƒå¼
 bool isemptyCnf(HeadNode* L){
     if(L->num) return FALSE;
     else return TRUE;
 }
 
-//ÅĞ¶Ï·¶Ê½ÖĞÊÇ·ñÓĞ¿Õ×Ó¾ä
+//åˆ¤æ–­èŒƒå¼ä¸­æ˜¯å¦æœ‰ç©ºå­å¥
 bool isHaveEmptyClause(HeadNode* L){
     HeadNode* _pH = L->down;
     while(_pH){
@@ -159,7 +159,7 @@ bool isHaveEmptyClause(HeadNode* L){
     return FALSE;
 }
 
-//½«v×÷ÎªÒ»¸öµ¥×Ó¾äºÏ²¢µ½·¶Ê½LÖĞ£¬½«ºÏ²¢ºóµÄ·¶Ê½×÷Îª·µ»ØÖµ
+//å°†vä½œä¸ºä¸€ä¸ªå•å­å¥åˆå¹¶åˆ°èŒƒå¼Lä¸­ï¼Œå°†åˆå¹¶åçš„èŒƒå¼ä½œä¸ºè¿”å›å€¼
 HeadNode* merge(HeadNode* L, int v){
     HeadNode* pH = new HeadNode; pH->num++;
     pH->down = L->down;
@@ -167,11 +167,11 @@ HeadNode* merge(HeadNode* L, int v){
     DataNode* p = new DataNode; p->value = v;
     pH->right = p; p->next = nullptr;
     L->num++;
-    //cout << "mergeÍêÖ®ºóÌí¼ÓµÄvÎª£º" << L->down->right->value << endl;
+    //cout << "mergeå®Œä¹‹åæ·»åŠ çš„vä¸ºï¼š" << L->down->right->value << endl;
     return L;
 }
 
-//Ö±½Ó·µ»ØµÚÒ»¸öÎÄ×Ö¼´¿É
+//ç›´æ¥è¿”å›ç¬¬ä¸€ä¸ªæ–‡å­—å³å¯
 int SelectWord(HeadNode* L){
     HeadNode* _pH = L->down;
     int ans;
@@ -183,14 +183,14 @@ int SelectWord(HeadNode* L){
         }
         _pH = _pH->down;
     }
-    cout << "·¶Ê½Îª¿Õ¼¯£¬ÎŞ·¨Ñ¡ÔñÎÄ×Ö·µ»Ø" << endl;
+    cout << "èŒƒå¼ä¸ºç©ºé›†ï¼Œæ— æ³•é€‰æ‹©æ–‡å­—è¿”å›" << endl;
     return 0;
 }
 
-int SelectWord2(HeadNode* L){//×î¶Ì×Ó¾äÓÅÏÈ
+int SelectWord2(HeadNode* L){//æœ€çŸ­å­å¥ä¼˜å…ˆ
     HeadNode* _pH = L->down;
     int _min, ans = 0;
-    if(!_pH){cout << "·¶Ê½Îª¿Õ¼¯£¬ÎŞ·¨Ñ¡ÔñÎÄ×Ö·µ»Ø" << endl; return 0;}
+    if(!_pH){cout << "èŒƒå¼ä¸ºç©ºé›†ï¼Œæ— æ³•é€‰æ‹©æ–‡å­—è¿”å›" << endl; return 0;}
     _min = _pH->num; ans = _pH->right->value;
     while(_pH){
         if(_pH->num != 0 && _pH->num < _min) ans = _pH->right->value;
@@ -199,12 +199,12 @@ int SelectWord2(HeadNode* L){//×î¶Ì×Ó¾äÓÅÏÈ
     return ans;
 }
 
-//½öÓÃÓÚ²âÊÔÊ¹ÓÃ
+//ä»…ç”¨äºæµ‹è¯•ä½¿ç”¨
 void printList(HeadNode* L){
     HeadNode* _pH = L->down;
     int i = 1;
     while(_pH){
-        cout << "µÚ" << i++ << "ĞĞ£º" << _pH->num;
+        cout << "ç¬¬" << i++ << "è¡Œï¼š" << _pH->num;
         DataNode* _p = _pH->right;
         while(_p){
             cout << "->" << _p->value;
@@ -215,7 +215,7 @@ void printList(HeadNode* L){
     }
 }
 
-//½«LÖĞÈ«²¿ÄÚÈİ¶¼¿½±´µ½temLÖĞ£¬º¯Êı½á¹¹Óëcnfparserº¯Êı»ù±¾ÏàÍ¬
+//å°†Lä¸­å…¨éƒ¨å†…å®¹éƒ½æ‹·è´åˆ°temLä¸­ï¼Œå‡½æ•°ç»“æ„ä¸cnfparserå‡½æ•°åŸºæœ¬ç›¸åŒ
 HeadNode* CopyList(HeadNode* L){
     HeadNode* temL = new HeadNode;
     temL->num = L->num;
@@ -230,7 +230,7 @@ HeadNode* CopyList(HeadNode* L){
         while(p->next){
             p = p->next; tep = p->value;
             _p = new DataNode;
-            _p->value = tep;//²ÉÓÃÍ·²å·¨½¨Á¢Á´±í
+            _p->value = tep;//é‡‡ç”¨å¤´æ’æ³•å»ºç«‹é“¾è¡¨
             _p->next = _pH->right;
             _pH->right = _p;
         }
@@ -246,7 +246,7 @@ HeadNode* CopyList(HeadNode* L){
 
 
 void FreeList(HeadNode* L){
-    //ÊÍ·ÅµôLÀïÃæµÄËùÓĞÄÚ´æ¿Õ¼ä
+    //é‡Šæ”¾æ‰Lé‡Œé¢çš„æ‰€æœ‰å†…å­˜ç©ºé—´
     HeadNode* _pH = L->down;
     while(_pH){
         DataNode* _p = _pH->right;
@@ -266,7 +266,7 @@ void FreeList(HeadNode* L){
 
 // extern int FunNum;
 // bool verification(HeadNode* ordL, int* book);
-// //ÑéÖ¤¸ù¾İDPLLËã·¨Éú³ÉµÄÎÄ¼şÊÇ·ñÕıÈ·
+// //éªŒè¯æ ¹æ®DPLLç®—æ³•ç”Ÿæˆçš„æ–‡ä»¶æ˜¯å¦æ­£ç¡®
 // bool isCorrect(string& filename){
 //     HeadNode* L = CnfParser(filename);
 //     HeadNode* ordL = CopyList(L);
@@ -276,18 +276,18 @@ void FreeList(HeadNode* L){
 //     memset(book, 0, sizeof(int)*_FunNum);
 
 //     int isTrue = NewDPLL(L, book);
-//     if(!isTrue){cout << ".cnfÎÄ¼ş²»¿ÉÂú×ã"; exit(0);}
+//     if(!isTrue){cout << ".cnfæ–‡ä»¶ä¸å¯æ»¡è¶³"; exit(0);}
 //     else{
 //         if(verification(ordL, book)) return TRUE;
 //         else return FALSE;
 //     }
 // }
 // /*
-// ½âÎöÎÄ¼ş£¬Éú³ÉÁ´±íL£¬Í¬Ê±¿½±´Ò»·İ²»»á¸Ä±äµÄordL;£¨²»»á¸Ä±äµÄL£©
-// Ö´ĞĞDPLLËã·¨£¬Éú³É.resÎÄ¼ş
-// Èç¹ûDPLLËã·¨·µ»ØÎª¼Ù£¬Ö±½ÓÍË³ö¾ÍĞĞ£¬ÎªÕæ½øĞĞÏÂÒ»²½
-// Ö±½Ó±éÀúordL½á¹¹£¬·ÃÎÊbook¶ÔÓ¦µÄÎÄ×ÖµÄÖµ
-// Èç¹ûÓĞÒ»¸ö×Ó¾äµÄËùÓĞµÄÎÄ×Ö¶¼²»»áÂú×ã£¬ÄÇÃ´¸Ã½â¾ÍÊÇÓĞÎÊÌâ
+// è§£ææ–‡ä»¶ï¼Œç”Ÿæˆé“¾è¡¨Lï¼ŒåŒæ—¶æ‹·è´ä¸€ä»½ä¸ä¼šæ”¹å˜çš„ordL;ï¼ˆä¸ä¼šæ”¹å˜çš„Lï¼‰
+// æ‰§è¡ŒDPLLç®—æ³•ï¼Œç”Ÿæˆ.resæ–‡ä»¶
+// å¦‚æœDPLLç®—æ³•è¿”å›ä¸ºå‡ï¼Œç›´æ¥é€€å‡ºå°±è¡Œï¼Œä¸ºçœŸè¿›è¡Œä¸‹ä¸€æ­¥
+// ç›´æ¥éå†ordLç»“æ„ï¼Œè®¿é—®bookå¯¹åº”çš„æ–‡å­—çš„å€¼
+// å¦‚æœæœ‰ä¸€ä¸ªå­å¥çš„æ‰€æœ‰çš„æ–‡å­—éƒ½ä¸ä¼šæ»¡è¶³ï¼Œé‚£ä¹ˆè¯¥è§£å°±æ˜¯æœ‰é—®é¢˜
 // */
 // bool verification(HeadNode* ordL, int* book){
 //     HeadNode* _pH = ordL->down;

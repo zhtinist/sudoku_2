@@ -1,10 +1,10 @@
 #include"def.h"
 
 /*
-* º¯ÊıÃû³Æ: WriteFile
-* ½ÓÊÜ²ÎÊı: int,int,int[]
-* º¯Êı¹¦ÄÜ: ½«ÔËĞĞ½á¹û±£´æÖÁÍ¬ÃûÎÄ¼ş£¬ÎÄ¼şÍØÕ¹ÃûÎª.res,±£´æ³É¹¦·µ»Ø1£¬Ê§°Ü·µ»Ø0
-* ·µ»ØÖµ: int
+* å‡½æ•°åç§°: WriteFile
+* æ¥å—å‚æ•°: int,int,int[]
+* å‡½æ•°åŠŸèƒ½: å°†è¿è¡Œç»“æœä¿å­˜è‡³åŒåæ–‡ä»¶ï¼Œæ–‡ä»¶æ‹“å±•åä¸º.res,ä¿å­˜æˆåŠŸè¿”å›1ï¼Œå¤±è´¥è¿”å›0
+* è¿”å›å€¼: int
 */
 int WriteFile(int result, double time, int value[])
 {
@@ -12,7 +12,7 @@ int WriteFile(int result, double time, int value[])
 	int i;
 	for (i = 0; fileName[i] != '\0'; i++)
 	{
-		//ĞŞ¸ÄÍØÕ¹Ãû
+		//ä¿®æ”¹æ‹“å±•å
 		if (fileName[i] == '.' && fileName[i + 4] == '\0')
 		{
 			fileName[i + 1] = 'r';
@@ -22,20 +22,20 @@ int WriteFile(int result, double time, int value[])
 		}
 	}
 	if (!(fp=fopen(fileName, "w"))) {
-		printf("ÎÄ¼ş´ò¿ªÊ§°Ü!\n");
+		printf("æ–‡ä»¶æ‰“å¼€å¤±è´¥!\n");
 		return 0;
 	}
-	fprintf(fp, "s %d\nv ", result);  //Çó½â½á¹û
+	fprintf(fp, "s %d\nv ", result);  //æ±‚è§£ç»“æœ
 	if (result == 1)
 	{
-		//±£´æ½âÖµ
+		//ä¿å­˜è§£å€¼
 		for (i = 1; i <= boolCount; i++)
 		{
 			if (value[i] == 1) fprintf(fp, "%d ", i);
 			else fprintf(fp, "%d ", -i);
 		}
 	}
-	fprintf(fp, "\nt %lf", time * 1000);  //ÔËĞĞÊ±¼ä/ºÁÃë
+	fprintf(fp, "\nt %lf", time * 1000);  //è¿è¡Œæ—¶é—´/æ¯«ç§’
 	fclose(fp);
 	return 1;
 }
@@ -46,7 +46,7 @@ int WriteFileAgain(int result, double time, int value[])
 	int i;
 	for (i = 0; fileName[i] != '\0'; i++)
 	{
-		//ĞŞ¸ÄÍØÕ¹Ãû
+		//ä¿®æ”¹æ‹“å±•å
 		if (fileName[i] == '.' && fileName[i + 4] == '\0')
 		{
 			fileName[i + 1] = 'r';
@@ -56,13 +56,13 @@ int WriteFileAgain(int result, double time, int value[])
 		}
 	}
 	if (!(fp=fopen(fileName, "a"))) {
-		printf("ÎÄ¼ş´ò¿ªÊ§°Ü!\n");
+		printf("æ–‡ä»¶æ‰“å¼€å¤±è´¥!\n");
 		return 0;
 	}
-	fprintf(fp, "\ns %d\nv ", result);  //Çó½â½á¹û
+	fprintf(fp, "\ns %d\nv ", result);  //æ±‚è§£ç»“æœ
 	if (result == 1)
 	{
-		//±£´æ½âÖµ
+		//ä¿å­˜è§£å€¼
 		for (i = 1; i <= boolCount; i++)
 		{
 			if (value[i] == 1) fprintf(fp, "%d ", i);
@@ -70,7 +70,7 @@ int WriteFileAgain(int result, double time, int value[])
 		}
 	}
 	if(result!=0)
-	fprintf(fp, "\nt %lf", time * 1000);  //ÔËĞĞÊ±¼ä/ºÁÃë
+	fprintf(fp, "\nt %lf", time * 1000);  //è¿è¡Œæ—¶é—´/æ¯«ç§’
 	fclose(fp);
 	return 1;
 }
@@ -83,7 +83,7 @@ void OutFileFun1(string _PATH, bool suc, int* book, int _Ctime, int FunNum, int 
         cout << "OutFile can not open!" << endl;
         exit(0);
     }
-    op << "s " << suc << endl;//½á¹û
+    op << "s " << suc << endl;//ç»“æœ
     if(suc){
         op << "v";
         for(int i = 1, k = 1; i <= FunNum; i++){

@@ -18,18 +18,18 @@
 #define NO 0
 using namespace std;
 typedef int status;
-////Õë¶ÔÊı¶ÀµÄdpll
-//Ê®×ÖÁ´±í½á¹¹Ìå
+////é’ˆå¯¹æ•°ç‹¬çš„dpll
+//åå­—é“¾è¡¨ç»“æ„ä½“
 typedef struct SATNode{
-	int data;  //Êı¾İÓò
+	int data;  //æ•°æ®åŸŸ
 	SATNode* next;
 }SATNode;
 typedef struct SATList {
-	SATNode* head;  //±íÍ·
+	SATNode* head;  //è¡¨å¤´
 	SATList* next;
 }SATList;
 
-//º¯ÊıÉùÃ÷
+//å‡½æ•°å£°æ˜
 int cnfmaker(char chess[],char *fileName);
 int ReadFile(SATList*& cnf);
 void destroyClause(SATList*& cnf);
@@ -52,35 +52,35 @@ void CreateSudoku(int a[]);
 int randnum(int low,int high);
 //
 status DpllSolver(SATList* f, int* truth_table);
-SATList* AddClause(SATList* s, int var);        // Ôö¼Óµ¥×Ó¾ä
-SATList* IsUnitClause(SATList* s);              // ÅĞ¶ÏÊÇ·ñ´æÔÚµ¥×Ó¾ä
-SATList* CopyS(SATList* s);                     // ¸´ÖÆ±í
-SATList* CopyClause(SATList* s);                // ¸´ÖÆÒ»¸ö×Ó¾ä
-SATList* DeleteClause(SATList* s);              // É¾³ıÒ»¸ö×Ó¾ä
-SATList* DeleteLiteral(SATList* s, int var);    // É¾³ı¸º±äÔª
-status Print(SATList* s);                          // ´òÓ¡±í
-status IsEmptyClause(SATList* s);                  // ÅĞ¶ÏÊÇ·ñ´æÔÚ¿Õ×Ó¾ä
-status EvaluateClause();                              // ÆÀ¹À¾ä×ÓÕæ¼Ù×´Ì¬
-status RecordTruth(SATList* s, int* truth_table);  // ¼ÇÂ¼µ¥×Ó¾äÖĞÔªËØµÄÕæÖµ
-status RemoveVar(SATList* s, int var);             // É¾³ı±äÔªËùÔÚ×Ó¾äÓë¸º±äÔª
+SATList* AddClause(SATList* s, int var);        // å¢åŠ å•å­å¥
+SATList* IsUnitClause(SATList* s);              // åˆ¤æ–­æ˜¯å¦å­˜åœ¨å•å­å¥
+SATList* CopyS(SATList* s);                     // å¤åˆ¶è¡¨
+SATList* CopyClause(SATList* s);                // å¤åˆ¶ä¸€ä¸ªå­å¥
+SATList* DeleteClause(SATList* s);              // åˆ é™¤ä¸€ä¸ªå­å¥
+SATList* DeleteLiteral(SATList* s, int var);    // åˆ é™¤è´Ÿå˜å…ƒ
+status Print(SATList* s);                          // æ‰“å°è¡¨
+status IsEmptyClause(SATList* s);                  // åˆ¤æ–­æ˜¯å¦å­˜åœ¨ç©ºå­å¥
+status EvaluateClause();                              // è¯„ä¼°å¥å­çœŸå‡çŠ¶æ€
+status RecordTruth(SATList* s, int* truth_table);  // è®°å½•å•å­å¥ä¸­å…ƒç´ çš„çœŸå€¼
+status RemoveVar(SATList* s, int var);             // åˆ é™¤å˜å…ƒæ‰€åœ¨å­å¥ä¸è´Ÿå˜å…ƒ
 int PickVar(SATList* s);                    
 
 
 
-////Õë¶ÔÖú½ÌËãÀıµÄ¸ßĞÔÄÜdpll
+////é’ˆå¯¹åŠ©æ•™ç®—ä¾‹çš„é«˜æ€§èƒ½dpll
 typedef struct DataNode{
     int value = 0;
     struct DataNode* next;
 }DataNode;
 
 typedef struct HeadNode{
-    int num = 0;//¶àÁËÒ»¸öÍ³¼ÆÔªËØ¸öÊıµÄÁ¿
-    struct HeadNode* down;//Í·½áµãÏòÏÂ
-    struct DataNode* right;//Í¬Ò»¸ö×Ó¾äÖĞ½áµãÏòÓÒÖ¸Õë
+    int num = 0;//å¤šäº†ä¸€ä¸ªç»Ÿè®¡å…ƒç´ ä¸ªæ•°çš„é‡
+    struct HeadNode* down;//å¤´ç»“ç‚¹å‘ä¸‹
+    struct DataNode* right;//åŒä¸€ä¸ªå­å¥ä¸­ç»“ç‚¹å‘å³æŒ‡é’ˆ
 }HeadNode;
 HeadNode* CnfParser(string& filename);
 void display();
-bool DPLL(HeadNode* L, int* book);//ºËĞÄËã·¨²¿·Ö
+bool DPLL(HeadNode* L, int* book);//æ ¸å¿ƒç®—æ³•éƒ¨åˆ†
 bool NewDPLL(HeadNode* L, int* book);
 int SingleSpread(HeadNode* L, int* book);
 int isHaveSingleClause(HeadNode* L);

@@ -1,7 +1,7 @@
 #include"def.h"
-//Ä¿Ç°´æÈëµÄÖÕÅÌÄ£°æÊı,·½±ã¼ÓÈëĞÂµÄÖÕÅÌ
+//ç›®å‰å­˜å…¥çš„ç»ˆç›˜æ¨¡ç‰ˆæ•°,æ–¹ä¾¿åŠ å…¥æ–°çš„ç»ˆç›˜
 #define DATA 20
-//³õÊ¼µÄÖÕÅÌÓÃÓÚÉú³ÉÓÎÏ·
+//åˆå§‹çš„ç»ˆç›˜ç”¨äºç”Ÿæˆæ¸¸æˆ
 char ending_game_data[DATA][70]={   
                                     "HQV1G4563263847554721632638975437915428625789634463217554876363452",
                                     "HQV1G4536232457667984532367984556813792445281673745283631456263745",
@@ -23,11 +23,11 @@ char ending_game_data[DATA][70]={
                                     "HQV1G5637461542374631524389726535928174627594863486732563857456432",
                                     "HQV1G5632438465747251366387241524519876357861324637241548653735246",
                                     "HQV1G2436557624363451274581273636278951427396845587493643865765423"};
-//Ğı×ªÆåÅÌÒÔÌá¸ßÊı¶ÀÆåÅÌ¶àÑùĞÔ
-void clockwise(char* input,char* output);//Ë³Ö¸ÕëĞı×ªÆåÅÌ
-void counter_clockwise(char* input,char* output);//ÄæÊ±ÕëĞı×ªÆåÅÌ
-int iscorrect(char* game);//ÑéÖ¤ÍÚ¶´ºó½âÊÇ·ñÎ¨Ò»
-//Éú³ÉĞÂÓÎÏ·,±¾ÎÄ¼şÖ÷Òª¹¦ÄÜ
+//æ—‹è½¬æ£‹ç›˜ä»¥æé«˜æ•°ç‹¬æ£‹ç›˜å¤šæ ·æ€§
+void clockwise(char* input,char* output);//é¡ºæŒ‡é’ˆæ—‹è½¬æ£‹ç›˜
+void counter_clockwise(char* input,char* output);//é€†æ—¶é’ˆæ—‹è½¬æ£‹ç›˜
+int iscorrect(char* game);//éªŒè¯æŒ–æ´åè§£æ˜¯å¦å”¯ä¸€
+//ç”Ÿæˆæ–°æ¸¸æˆ,æœ¬æ–‡ä»¶ä¸»è¦åŠŸèƒ½
 void create_new_game(char *game,int rank)
 {
     switch (rank)
@@ -40,20 +40,20 @@ void create_new_game(char *game,int rank)
         rank=35;
         break;
     }
-    //¸ù¾İÊ±¼äÉú³ÉËæ»úÊı
+    //æ ¹æ®æ—¶é—´ç”Ÿæˆéšæœºæ•°
     int timestamp;
     int random_num,randomnum;
-    // »ñÈ¡µ±Ç°ÏµÍ³Ê±¼äµÄÊ±¼ä´Á
+    // è·å–å½“å‰ç³»ç»Ÿæ—¶é—´çš„æ—¶é—´æˆ³
     timestamp = (int)time(NULL);
-    // ÉèÖÃËæ»úÊıÖÖ×Ó
+    // è®¾ç½®éšæœºæ•°ç§å­
     srand((unsigned int)time(NULL));
-    // Éú³ÉËæ»úÊı
+    // ç”Ÿæˆéšæœºæ•°
     random_num = rand();
     randomnum=rand();
     random_num%=DATA;
     randomnum%=6;
     strcpy(game,*(ending_game_data+random_num));
-    //Ëæ»úĞı×ª0~5´Î60¶È½Ç
+    //éšæœºæ—‹è½¬0~5æ¬¡60åº¦è§’
     for(int i=0;i<randomnum;i++)
     {
         char temp[70]={0};
@@ -66,7 +66,7 @@ void create_new_game(char *game,int rank)
         char temp_game[70]={0};
         strcpy(temp_game,game);
         
-        //Ëæ»úÈ¡ÍÚ¶´Î»ÖÃ
+        //éšæœºå–æŒ–æ´ä½ç½®
         do
         {
             pos=rand();
@@ -74,7 +74,7 @@ void create_new_game(char *game,int rank)
         }while(temp_game[pos+5]=='0');
         // cout<<pos<<endl;
         int sum_answer=0;
-        for(int j=1;j<=9;j++){//'1'µ½'9'Öğ¸ö³¢ÊÔÊÇ·ñÖ»ÓĞÆäÖĞÖ®Ò»ÓĞ½â
+        for(int j=1;j<=9;j++){//'1'åˆ°'9'é€ä¸ªå°è¯•æ˜¯å¦åªæœ‰å…¶ä¸­ä¹‹ä¸€æœ‰è§£
             temp_game[5+pos]='0'+j;
             sum_answer+=iscorrect(temp_game);
             // cout<<sum_answer<<endl;
@@ -83,12 +83,12 @@ void create_new_game(char *game,int rank)
         if(sum_answer==1)
         {
             game[5+pos]='0';
-            cout<<"\rÒÑ¾­Éú³É"<<i+1<<"¸ö¶´!";
+            cout<<"\rå·²ç»ç”Ÿæˆ"<<i+1<<"ä¸ªæ´!";
         }else i--;
     }
     randomnum=rand();
     randomnum%=6;
-    //Ëæ»úĞı×ª0~5´Î60¶È½Ç
+    //éšæœºæ—‹è½¬0~5æ¬¡60åº¦è§’
     for(int i=0;i<randomnum;i++)
     {
         char temp[70]={0};
@@ -100,7 +100,7 @@ void create_new_game(char *game,int rank)
 
 
 
-//×ª»»½á¹û´æÔÚµÚ¶ş¸ö²ÎÊıÖĞ
+//è½¬æ¢ç»“æœå­˜åœ¨ç¬¬äºŒä¸ªå‚æ•°ä¸­
 void clockwise(char* input,char* output){
     int clockwise[65]={27,19,12,6,1,36,28,20,13,7,2,44,37,29,21,14,8,3,51,45,38,30,22,15,9,4,57,52,46,39,31,23,16,10,5,58,53,47,40,32,24,17,11,59,54,48,41,33,25,18,60,55,49,42,34,26,61,56,50,43,35,0,0};
     for(int i=0;i<5;i++) output[i]=input[i];
@@ -125,28 +125,28 @@ void counter_clockwise(char* input,char* output){
 
 int iscorrect(char* game){
     cout<<'.';
-    // //¹Ø±ÕÊä³öÁ÷
+    // //å…³é—­è¾“å‡ºæµ
     // fclose(stdout);
     cnfmaker(game,"temp.cnf");
     int value[61*9+1]={0};
     SATList* templist=NULL;
     ReadFile(templist,"temp.cnf");
-    //É¾³ıÁÙÊ±ÎÄ¼ş
+    //åˆ é™¤ä¸´æ—¶æ–‡ä»¶
     remove("temp.cnf");
     int re=DPLL(templist,value);
 
 
-    // //ÖØĞÂ¿ªÆôÊä³öÁ÷
+    // //é‡æ–°å¼€å¯è¾“å‡ºæµ
     // freopen("CON","w",stdout);
     return re;
 
 }
 
 /*
- * º¯ÊıÃû³Æ: destroyClause
- * ½ÓÊÜ²ÎÊı: SATList*&
- * º¯Êı¹¦ÄÜ: Ïú»ÙÁ´±í
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: destroyClause
+ * æ¥å—å‚æ•°: SATList*&
+ * å‡½æ•°åŠŸèƒ½: é”€æ¯é“¾è¡¨
+ * è¿”å›å€¼: int
  */
 void destroyClause(SATList*& cnf)
 {
@@ -166,10 +166,10 @@ void destroyClause(SATList*& cnf)
 }
 
 /*
- * º¯ÊıÃû³Æ: isUnitClause
- * ½ÓÊÜ²ÎÊı: SATNode*
- * º¯Êı¹¦ÄÜ: ÅĞ¶ÏÊÇ·ñÎªµ¥×Ó¾ä£¬ÊÇ·µ»Ø1£¬²»ÊÇ·µ»Ø0
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: isUnitClause
+ * æ¥å—å‚æ•°: SATNode*
+ * å‡½æ•°åŠŸèƒ½: åˆ¤æ–­æ˜¯å¦ä¸ºå•å­å¥ï¼Œæ˜¯è¿”å›1ï¼Œä¸æ˜¯è¿”å›0
+ * è¿”å›å€¼: int
  */
 int isUnitClause(SATNode* cnf)
 {
@@ -180,10 +180,10 @@ int isUnitClause(SATNode* cnf)
 }
 
 /*
- * º¯ÊıÃû³Æ: evaluateClause
- * ½ÓÊÜ²ÎÊı: SATList*
- * º¯Êı¹¦ÄÜ: ÆÀ¹À×Ó¾äµÄÕæ¼Ù×´Ì¬£¬Õæ·µ»Ø1£¬¼Ù·µ»Ø0
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: evaluateClause
+ * æ¥å—å‚æ•°: SATList*
+ * å‡½æ•°åŠŸèƒ½: è¯„ä¼°å­å¥çš„çœŸå‡çŠ¶æ€ï¼ŒçœŸè¿”å›1ï¼Œå‡è¿”å›0
+ * è¿”å›å€¼: int
  */
 int evaluateClause(SATNode* cnf,int v[])
 {
@@ -198,15 +198,15 @@ int evaluateClause(SATNode* cnf,int v[])
 }
 
 /*
- * º¯ÊıÃû³Æ: removeClause
- * ½ÓÊÜ²ÎÊı: SATList*,SATList*
- * º¯Êı¹¦ÄÜ: ÔÚÒÑÓĞµÄÊ®×ÖÁ´±íÖĞÉ¾³ıÖ¸¶¨µÄ×Ó¾ä£¬É¾³ı³É¹¦·µ»Ø1£¬Ê§°Ü·µ»Ø0
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: removeClause
+ * æ¥å—å‚æ•°: SATList*,SATList*
+ * å‡½æ•°åŠŸèƒ½: åœ¨å·²æœ‰çš„åå­—é“¾è¡¨ä¸­åˆ é™¤æŒ‡å®šçš„å­å¥ï¼Œåˆ é™¤æˆåŠŸè¿”å›1ï¼Œå¤±è´¥è¿”å›0
+ * è¿”å›å€¼: int
  */
 int removeClause(SATList*& cnf, SATList*& root)
 {
 	SATList* lp = root;
-	if (lp == cnf) root = root->next;  //É¾³ıÎªÍ·
+	if (lp == cnf) root = root->next;  //åˆ é™¤ä¸ºå¤´
 	else
 	{
 		while (lp != NULL && lp->next != cnf) lp = lp->next;
@@ -218,15 +218,15 @@ int removeClause(SATList*& cnf, SATList*& root)
 }
 
 /*
- * º¯ÊıÃû³Æ: removeNote
- * ½ÓÊÜ²ÎÊı: SATNode*,SATNode*
- * º¯Êı¹¦ÄÜ: ÔÚÖ¸¶¨µÄ×Ó¾äÖĞÉ¾³ıÖ¸¶¨µÄÎÄ×Ö£¬É¾³ı³É¹¦·µ»Ø1£¬Ê§°Ü·µ»Ø0
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: removeNote
+ * æ¥å—å‚æ•°: SATNode*,SATNode*
+ * å‡½æ•°åŠŸèƒ½: åœ¨æŒ‡å®šçš„å­å¥ä¸­åˆ é™¤æŒ‡å®šçš„æ–‡å­—ï¼Œåˆ é™¤æˆåŠŸè¿”å›1ï¼Œå¤±è´¥è¿”å›0
+ * è¿”å›å€¼: int
  */
 int removeNode(SATNode*& cnf, SATNode*& head)
 {
 	SATNode* lp = head;
-	if (lp == cnf) head = head->next;  //É¾³ıÎªÍ·
+	if (lp == cnf) head = head->next;  //åˆ é™¤ä¸ºå¤´
 	else
 	{
 		while (lp != NULL && lp->next != cnf) lp = lp->next;
@@ -238,14 +238,14 @@ int removeNode(SATNode*& cnf, SATNode*& head)
 }
 
 /*
- * º¯ÊıÃû³Æ: addClause
- * ½ÓÊÜ²ÎÊı: SATList*,SATList*
- * º¯Êı¹¦ÄÜ: ÔÚÒÑÓĞµÄÊ®×ÖÁ´±íÖĞÌí¼ÓÖ¸¶¨µÄ×Ó¾ä£¬Ìí¼Ó³É¹¦·µ»Ø1£¬Ê§°Ü·µ»Ø0
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: addClause
+ * æ¥å—å‚æ•°: SATList*,SATList*
+ * å‡½æ•°åŠŸèƒ½: åœ¨å·²æœ‰çš„åå­—é“¾è¡¨ä¸­æ·»åŠ æŒ‡å®šçš„å­å¥ï¼Œæ·»åŠ æˆåŠŸè¿”å›1ï¼Œå¤±è´¥è¿”å›0
+ * è¿”å›å€¼: int
  */
 int addClause(SATList* cnf, SATList*& root)
 {
-	//Ö±½Ó²åÈëÔÚ±íÍ·
+	//ç›´æ¥æ’å…¥åœ¨è¡¨å¤´
 	if (cnf != NULL)
 	{
 		cnf->next = root;
@@ -256,10 +256,10 @@ int addClause(SATList* cnf, SATList*& root)
 }
 
 /*
- * º¯ÊıÃû³Æ: emptyClause
- * ½ÓÊÜ²ÎÊı: SATList*
- * º¯Êı¹¦ÄÜ: ÅĞ¶ÏÊÇ·ñº¬ÓĞ¿Õ×Ó¾ä£¬ÊÇ·µ»Ø1£¬²»ÊÇ·µ»Ø0
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: emptyClause
+ * æ¥å—å‚æ•°: SATList*
+ * å‡½æ•°åŠŸèƒ½: åˆ¤æ–­æ˜¯å¦å«æœ‰ç©ºå­å¥ï¼Œæ˜¯è¿”å›1ï¼Œä¸æ˜¯è¿”å›0
+ * è¿”å›å€¼: int
  */
 int emptyClause(SATList* cnf)
 {
@@ -273,10 +273,10 @@ int emptyClause(SATList* cnf)
 }
 
 /*
- * º¯ÊıÃû³Æ: CopyClause
- * ½ÓÊÜ²ÎÊı: SATList*,SATList*
- * º¯Êı¹¦ÄÜ: ½«Á´±íbµÄÖµ¸´ÖÆµ½Á´±íaÖĞ
- * ·µ»ØÖµ: void
+ * å‡½æ•°åç§°: CopyClause
+ * æ¥å—å‚æ•°: SATList*,SATList*
+ * å‡½æ•°åŠŸèƒ½: å°†é“¾è¡¨bçš„å€¼å¤åˆ¶åˆ°é“¾è¡¨aä¸­
+ * è¿”å›å€¼: void
  */
 void CopyClause(SATList*& a, SATList* b)
 {
@@ -313,10 +313,10 @@ void CopyClause(SATList*& a, SATList* b)
 }
 
 /*
-* º¯ÊıÃû³Æ: DPLL
-* ½ÓÊÜ²ÎÊı: SATList *
-* º¯Êı¹¦ÄÜ: Çó½âSATÎÊÌâ£¬¸ø³öÂú×ãÌõ¼şÊ±µÄÒ»¸öÊ½×Ó,ÈôÓĞ½âÔò·µ»Ø1£¬ÎŞ½â·µ»Ø0
-* ·µ»ØÖµ: int
+* å‡½æ•°åç§°: DPLL
+* æ¥å—å‚æ•°: SATList *
+* å‡½æ•°åŠŸèƒ½: æ±‚è§£SATé—®é¢˜ï¼Œç»™å‡ºæ»¡è¶³æ¡ä»¶æ—¶çš„ä¸€ä¸ªå¼å­,è‹¥æœ‰è§£åˆ™è¿”å›1ï¼Œæ— è§£è¿”å›0
+* è¿”å›å€¼: int
 */
 //int ReadFile(SATList*& cnf);
 //void destroyClause(SATList*& cnf);
@@ -334,47 +334,47 @@ void CopyClause(SATList*& a, SATList* b)
 status DpllSolver(SATList* s, int* truth_table)
 {
     SATList* s_tmp = s;
-    SATList* unit_clause = IsUnitClause(s_tmp);    // »ñµÃµ¥×Ó¾ä
+    SATList* unit_clause = IsUnitClause(s_tmp);    // è·å¾—å•å­å¥
 
-    // µ¥×Ó¾ä¹æÔò
+    // å•å­å¥è§„åˆ™
     while(unit_clause)
     {
 		// ios_base::sync_with_stdio(false);
-		// cout<<"Êı¾İÕûÀíÖĞ,ÇëÉÔºò......\r";
-		// printf("Êı¾İÕûÀíÖĞ,ÇëÉÔºò......\r");
-        RecordTruth(unit_clause, truth_table);        // ¼ÇÂ¼µ¥×Ó¾äÖĞµÄ±äÔªµÄÕæÖµ
+		// cout<<"æ•°æ®æ•´ç†ä¸­,è¯·ç¨å€™......\r";
+		// printf("æ•°æ®æ•´ç†ä¸­,è¯·ç¨å€™......\r");
+        RecordTruth(unit_clause, truth_table);        // è®°å½•å•å­å¥ä¸­çš„å˜å…ƒçš„çœŸå€¼
         int var = unit_clause->head->data;
         RemoveVar(s, var);
 
-        if(s->next == NULL) return FOUND;             // SÎª¿Õ
-        else if(IsEmptyClause(s))   return NOTFOUND;  // SÖĞ´æÔÚ¿Õ×Ó¾ä
+        if(s->next == NULL) return FOUND;             // Sä¸ºç©º
+        else if(IsEmptyClause(s))   return NOTFOUND;  // Sä¸­å­˜åœ¨ç©ºå­å¥
 
         s_tmp = s;
-        unit_clause = IsUnitClause(s_tmp);            // »¹´æÔÚµ¥×Ó¾äÔò¼ÌĞøÑ­»·
+        unit_clause = IsUnitClause(s_tmp);            // è¿˜å­˜åœ¨å•å­å¥åˆ™ç»§ç»­å¾ªç¯
     }
 	// ios_base::sync_with_stdio(false);
-	// cout<<"ÔËËãÖĞ,ÇëÉÔºò.......\r";
-	// printf("ÔËËãÖĞ,ÇëÉÔºò........\r");
-    // ·ÖÁÑ²ßÂÔ
-    int var = PickVar(s);                                                  // Ñ¡±äÔª
-    if(DpllSolver(AddClause(CopyS(s), var), truth_table))  return FOUND;   // ±äÔªµÄÕæÖµÑ¡¶ÔÁË,´Ë´¦´«ÈëSµÄ¿½±´
-    return DpllSolver(AddClause(s, -var), truth_table);                    // ±äÔªµÄÕæÖµÑ¡´íÁË
+	// cout<<"è¿ç®—ä¸­,è¯·ç¨å€™.......\r";
+	// printf("è¿ç®—ä¸­,è¯·ç¨å€™........\r");
+    // åˆ†è£‚ç­–ç•¥
+    int var = PickVar(s);                                                  // é€‰å˜å…ƒ
+    if(DpllSolver(AddClause(CopyS(s), var), truth_table))  return FOUND;   // å˜å…ƒçš„çœŸå€¼é€‰å¯¹äº†,æ­¤å¤„ä¼ å…¥Sçš„æ‹·è´
+    return DpllSolver(AddClause(s, -var), truth_table);                    // å˜å…ƒçš„çœŸå€¼é€‰é”™äº†
 }
 
 SATList* CopyS(SATList* s)
 {
     SATList *s_new, *c_tmp, *s_origin = s->next;
 
-    // ´´½¨root
+    // åˆ›å»ºroot
     s_new = (SATList *)malloc(sizeof(SATList));
     s_new->head = NULL;
     c_tmp = s_new;
 
-    // Ñ­»·´´½¨×Ó¾ä
+    // å¾ªç¯åˆ›å»ºå­å¥
     while(s_origin)
     {
-        c_tmp->next = CopyClause(s_origin);  // ¸´ÖÆÕû¸ö×Ó¾ä
-        c_tmp = c_tmp->next;                 // ÏÂÒ»¸ö
+        c_tmp->next = CopyClause(s_origin);  // å¤åˆ¶æ•´ä¸ªå­å¥
+        c_tmp = c_tmp->next;                 // ä¸‹ä¸€ä¸ª
         s_origin = s_origin->next;
     }
     return s_new;
@@ -385,12 +385,12 @@ SATList* CopyClause(SATList* s)
     SATList* clause_tmp;
     SATNode *literal_tmp, *s_tmp = s->head;
 
-    // ´´½¨×Ó¾ä½áµã
+    // åˆ›å»ºå­å¥ç»“ç‚¹
     clause_tmp = (SATList *)malloc(sizeof(SATList));
     clause_tmp->next = NULL;
     clause_tmp->head = NULL;
 
-    // ´´½¨µÚÒ»¸öÎÄ×Ö½áµã
+    // åˆ›å»ºç¬¬ä¸€ä¸ªæ–‡å­—ç»“ç‚¹
     if(s_tmp)
     {
         literal_tmp = (SATNode *)malloc(sizeof(SATNode));
@@ -400,7 +400,7 @@ SATList* CopyClause(SATList* s)
         clause_tmp->head = literal_tmp;
     }
 
-    // Ñ­»·´´½¨Ö®ºóµÄÎÄ×Ö½áµã
+    // å¾ªç¯åˆ›å»ºä¹‹åçš„æ–‡å­—ç»“ç‚¹
     while(s_tmp)
     {
         literal_tmp->next = (SATNode *)malloc(sizeof(SATNode));
@@ -433,17 +433,17 @@ int PickVar(SATList* s)
 status RemoveVar(SATList* s, int var)
 {
     SATList *c_tmp = s->next, *last_c_tmp = s;
-    while(c_tmp)                                     // Ñ­»·¶ÁÈ¡Ã¿Ò»¸ö×Ó¾ä
+    while(c_tmp)                                     // å¾ªç¯è¯»å–æ¯ä¸€ä¸ªå­å¥
     {
-        c_tmp = DeleteLiteral(c_tmp, var);           // É¾³ı×Ó¾äÀïËùÓĞµÄ¸º±äÔª£¬Èç¹ûÓöµ½ÁËÕı±äÔªÔò·µ»ØNULL
-        if(c_tmp == NULL)                            // Óöµ½ÁËÕı±äÔª
+        c_tmp = DeleteLiteral(c_tmp, var);           // åˆ é™¤å­å¥é‡Œæ‰€æœ‰çš„è´Ÿå˜å…ƒï¼Œå¦‚æœé‡åˆ°äº†æ­£å˜å…ƒåˆ™è¿”å›NULL
+        if(c_tmp == NULL)                            // é‡åˆ°äº†æ­£å˜å…ƒ
         {
-            c_tmp = DeleteClause(last_c_tmp->next);  // ÓëÕı±äÔªÏàÍ¬ÔòÉ¾³ı×Ó¾ä
+            c_tmp = DeleteClause(last_c_tmp->next);  // ä¸æ­£å˜å…ƒç›¸åŒåˆ™åˆ é™¤å­å¥
             last_c_tmp->next = c_tmp;
             continue;
         }
         if(c_tmp == NULL)   break;
-        last_c_tmp = c_tmp;                          // ÏÂÒ»¸ö×Ó¾ä
+        last_c_tmp = c_tmp;                          // ä¸‹ä¸€ä¸ªå­å¥
         c_tmp = c_tmp->next;
     }
     return OK;
@@ -453,14 +453,14 @@ SATList* DeleteClause(SATList* s)
 {
     SATList* c_tmp = s;
     SATNode* l;
-    while(s->head)                     // ÏÈÉ¾³ı×Ó¾äÖĞËùÓĞÎÄ×Ö
+    while(s->head)                     // å…ˆåˆ é™¤å­å¥ä¸­æ‰€æœ‰æ–‡å­—
     {
         l = s->head;
         s->head = s->head->next;
         free(l);
     }
     s = s->next;
-    free(c_tmp);                        // ÔÙÉ¾³ı¿Õ×Ó¾ä
+    free(c_tmp);                        // å†åˆ é™¤ç©ºå­å¥
     return s;
 }
 
@@ -468,17 +468,17 @@ SATList* DeleteLiteral(SATList* s, int var)
 {
     SATNode *l = s->head, *l_tmp;
 
-    // ´¦ÀíµÚÒ»¸öÎÄ×Ö
-    if(l->data == -var)                  // ¸º±äÔª
+    // å¤„ç†ç¬¬ä¸€ä¸ªæ–‡å­—
+    if(l->data == -var)                  // è´Ÿå˜å…ƒ
     {
         l_tmp = s->head->next;
         free(l);
         s->head = l_tmp;
         return s;
     }
-    else if(l->data == var) return NULL; // Õı±äÔª
+    else if(l->data == var) return NULL; // æ­£å˜å…ƒ
 
-    // Ñ­»·´¦Àí½ÓÏÂÀ´µÄÎÄ×Ö
+    // å¾ªç¯å¤„ç†æ¥ä¸‹æ¥çš„æ–‡å­—
     while(l)
     {
         if(l->next && l->next->data == -var)
@@ -506,7 +506,7 @@ status IsEmptyClause(SATList* s)
 
 status RecordTruth(SATList* s, int* truth_table)
 {
-    int idx = abs(s->head->data) - 1;   // ĞòºÅ=¾ø¶ÔÖµ-1
+    int idx = abs(s->head->data) - 1;   // åºå·=ç»å¯¹å€¼-1
     if(s->head->data > 0)  truth_table[idx] = 1;
     else    truth_table[idx] = 0;
     return OK;
@@ -537,7 +537,7 @@ status Print(SATList* s)
             l_tmp = l_tmp->next;
         }
         if(c_tmp->head)    printf("\n");
-        else    printf("¿Õ\n");
+        else    printf("ç©º\n");
         c_tmp = c_tmp->next;
     }
     printf("------End------\n");
@@ -548,15 +548,15 @@ int DPLL(SATList*& cnf, int value[])
 {
 	SATList* tp = cnf, * lp = cnf, * sp;
 	SATNode* dp;
-	int* count, i, MaxWord, max, re; //count¼ÇÂ¼Ã¿¸öÎÄ×Ö³öÏÖ´ÎÊı,MaxWord¼ÇÂ¼³öÏÖ×î¶à´ÎÊıµÄÎÄ×Ö
+	int* count, i, MaxWord, max, re; //countè®°å½•æ¯ä¸ªæ–‡å­—å‡ºç°æ¬¡æ•°,MaxWordè®°å½•å‡ºç°æœ€å¤šæ¬¡æ•°çš„æ–‡å­—
 	count = (int*)malloc(sizeof(int) * (boolCount * 2 + 1));
-FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //ÕÒµ½±íÖĞµÄµ¥×Ó¾ä
+FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //æ‰¾åˆ°è¡¨ä¸­çš„å•å­å¥
 	if (tp != NULL)
 	{
 		// ios_base::sync_with_stdio(false);
-		// cout<<"Êı¾İ´¦ÀíÖĞ,ÇëÉÔºò.....\r";
-		// printf("Êı¾İÕûÀíÖĞ,ÇëÉÔºò......\r");
-		//µ¥×Ó¾ä¹æÔò¼ò»¯
+		// cout<<"æ•°æ®å¤„ç†ä¸­,è¯·ç¨å€™.....\r";
+		// printf("æ•°æ®æ•´ç†ä¸­,è¯·ç¨å€™......\r");
+		//å•å­å¥è§„åˆ™ç®€åŒ–
 		if (tp->head->data > 0) value[tp->head->data] = 1;
 		else value[-tp->head->data] = 0;
 		re = tp->head->data;
@@ -564,22 +564,22 @@ FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //ÕÒµ½±í
 		{
 			sp = lp->next;
 
-			//²éÕÒº¬ÓĞºËĞÄÎÄ×ÖµÄ¾ä×Ó
+			//æŸ¥æ‰¾å«æœ‰æ ¸å¿ƒæ–‡å­—çš„å¥å­
 			for (dp = lp->head; dp != NULL; dp = dp->next)
 			{
 				if (dp->data == re)
 				{
-					removeClause(lp, cnf);  //É¾³ı×Ó¾ä£¬¼ò»¯Ê½×Ó
+					removeClause(lp, cnf);  //åˆ é™¤å­å¥ï¼Œç®€åŒ–å¼å­
 					break;
 				}
 				if (dp->data == -re)
 				{
-					removeNode(dp, lp->head);  //É¾³ıÎÄ×Ö£¬¼ò»¯×Ó¾ä
+					removeNode(dp, lp->head);  //åˆ é™¤æ–‡å­—ï¼Œç®€åŒ–å­å¥
 					break;
 				}
 			}
 		}
-		//¼«¼ò»¯¹æÔò¼ò»¯ºó
+		//æç®€åŒ–è§„åˆ™ç®€åŒ–å
 		if (cnf == NULL)
 		{
 			free(count);
@@ -593,13 +593,13 @@ FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //ÕÒµ½±í
 		}
 		tp = cnf;
 		// ios_base::sync_with_stdio(false);
-		// cout<<"ÔËËãÖĞ,ÇëÉÔºò........\r";
-		// printf("ÔËËãÖĞ,ÇëÉÔºò........\r");
-		goto FIND;  //¼ÌĞø¼ò»¯
+		// cout<<"è¿ç®—ä¸­,è¯·ç¨å€™........\r";
+		// printf("è¿ç®—ä¸­,è¯·ç¨å€™........\r");
+		goto FIND;  //ç»§ç»­ç®€åŒ–
 	}
-	for (i = 0; i <= boolCount * 2; i++) count[i] = 0;  //³õÊ¼»¯
+	for (i = 0; i <= boolCount * 2; i++) count[i] = 0;  //åˆå§‹åŒ–
 
-	//¼ÆËã×Ó¾äÖĞ¸÷ÎÄ×Ö³öÏÖ´ÎÊı
+	//è®¡ç®—å­å¥ä¸­å„æ–‡å­—å‡ºç°æ¬¡æ•°
 	for (lp = cnf; lp != NULL; lp = lp->next)
 	{
 		for (dp = lp->head; dp != NULL; dp = dp->next)
@@ -610,7 +610,7 @@ FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //ÕÒµ½±í
 	}
 	max = 0;
 
-	//ÕÒµ½³öÏÖ´ÎÊı×î¶àµÄÕıÎÄ×Ö
+	//æ‰¾åˆ°å‡ºç°æ¬¡æ•°æœ€å¤šçš„æ­£æ–‡å­—
 	for (i = 2; i <= boolCount; i++)
 	{
 		if (max < count[i])
@@ -622,7 +622,7 @@ FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //ÕÒµ½±í
 
 	if (max == 0)
 	{
-		//ÈôÃ»ÓĞ³öÏÖÕıÎÄ×Ö,ÕÒµ½³öÏÖ´ÎÊı×î¶àµÄ¸ºÎÄ×Ö
+		//è‹¥æ²¡æœ‰å‡ºç°æ­£æ–‡å­—,æ‰¾åˆ°å‡ºç°æ¬¡æ•°æœ€å¤šçš„è´Ÿæ–‡å­—
 		for (i = boolCount + 1; i <= boolCount * 2; i++)
 		{
 			if (max < count[i])
@@ -640,7 +640,7 @@ FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //ÕÒµ½±í
 	lp->next = NULL;
 	CopyClause(tp, cnf);
 	addClause(lp, tp);
-	if (DPLL(tp, value) == 1) return 1;  //ÔÚµÚÒ»·ÖÖ§ÖĞËÑË÷
+	if (DPLL(tp, value) == 1) return 1;  //åœ¨ç¬¬ä¸€åˆ†æ”¯ä¸­æœç´¢
 	destroyClause(tp);
 	lp = (SATList*)malloc(sizeof(SATList));
 	lp->head = (SATNode*)malloc(sizeof(SATNode));
@@ -648,7 +648,7 @@ FIND:	while (tp != NULL && isUnitClause(tp->head) == 0) tp = tp->next;  //ÕÒµ½±í
 	lp->head->next = NULL;
 	lp->next = NULL;
 	addClause(lp, cnf);
-	re = DPLL(cnf, value); //»ØËİµ½Ö´ĞĞ·ÖÖ§²ßÂÔµÄ³õÌ¬½øÈëÁíÒ»·ÖÖ§
+	re = DPLL(cnf, value); //å›æº¯åˆ°æ‰§è¡Œåˆ†æ”¯ç­–ç•¥çš„åˆæ€è¿›å…¥å¦ä¸€åˆ†æ”¯
 	destroyClause(cnf);
 	return re;
 }

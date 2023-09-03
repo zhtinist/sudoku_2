@@ -1,9 +1,9 @@
 #include"include/def.h"
 #include<bits/stdc++.h>
-//È«¾Ö±äÁ¿
-int boolCount;  //²¼¶û±äÔªÊıÁ¿
-int clauseCount;  //×Ó¾äÊıÁ¿
-char fileName[300]; //ÎÄ¼şÃû
+//å…¨å±€å˜é‡
+int boolCount;  //å¸ƒå°”å˜å…ƒæ•°é‡
+int clauseCount;  //å­å¥æ•°é‡
+char fileName[300]; //æ–‡ä»¶å
 char filename3[300];
 int temp[9][9];
 char CHESS[100]="HQV1G0000000000000000000000000000000000000000000000000000000000000";
@@ -11,24 +11,24 @@ int zeroNum;
 SATList* CNFList = NULL, * lp;
 HeadNode* L =NULL,*yp;
 SATNode* tp;
-clock_t start, finish;  //ÉèÖÃÊ±¼ä±äÁ¿
+clock_t start, finish;  //è®¾ç½®æ—¶é—´å˜é‡
 double time1=0.0,time2=0.0;
 int op = 1, i, result,q,a1,a2,a3;
-int* value;  //±£´æ½á¹û
+int* value;  //ä¿å­˜ç»“æœ
 char SE[88];
 int nnn[100]={0};
 int d[10]={0,5,11,18,26,35,43,50,56,61};
 int isBetter=0;
-//ÒıÈëÆäËûÄ£¿é
+//å¼•å…¥å…¶ä»–æ¨¡å—
 #include"include/function.h"
 
 
-//º¯Êı¶¨Òå
+//å‡½æ•°å®šä¹‰
 /*
- * º¯ÊıÃû³Æ: main
- * ½ÓÊÜ²ÎÊı: void
- * º¯Êı¹¦ÄÜ: Ö÷º¯Êı
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: main
+ * æ¥å—å‚æ•°: void
+ * å‡½æ•°åŠŸèƒ½: ä¸»å‡½æ•°
+ * è¿”å›å€¼: int
  */
 int main(void)
 {
@@ -44,21 +44,21 @@ int main(void)
 		switch (op)
 		{
 		case 1:
-			printf("ÊäÈëÒª¶ÁÈ¡µÄcnfÎÄ¼ş:");
+			printf("è¾“å…¥è¦è¯»å–çš„cnfæ–‡ä»¶:");
 			cin >> filename;
 			L = CnfParser(filename);
-			if(!L) printf("¶ÁÈ¡Ê§°Ü£¡");
+			if(!L) printf("è¯»å–å¤±è´¥ï¼");
 			strcpy_s(fileName,filename.c_str());
 			ReadFile(CNFList,fileName);
-			cout<<"¶ÁÈ¡Íê³É"<<endl;
+			cout<<"è¯»å–å®Œæˆ"<<endl;
 			// getchar(); getchar();
 			system("pause");
 			break;
 		case 2:
-			if (CNFList == NULL) printf("Î´µ¼ÈëÎÄ¼ş\n");
+			if (CNFList == NULL) printf("æœªå¯¼å…¥æ–‡ä»¶\n");
 			else
 			{
-				printf("cnf×Ó¾äÈçÏÂ£º\n");
+				printf("cnfå­å¥å¦‚ä¸‹ï¼š\n");
 				for (lp = CNFList; lp != NULL; lp = lp->next)
 				{
 					for (tp = lp->head; tp != NULL; tp = tp->next)
@@ -67,12 +67,12 @@ int main(void)
 					}
 					printf("\n");
 				}
-				cout<<"ËùÓĞÊı¾İÒÑÊä³ö!"<<endl;
+				cout<<"æ‰€æœ‰æ•°æ®å·²è¾“å‡º!"<<endl;
 			}
 			system("pause");
 			break;
 		case 3:
-			if (L == NULL) printf("Î´µ¼ÈëÎÄ¼ş\n");
+			if (L == NULL) printf("æœªå¯¼å…¥æ–‡ä»¶\n");
 			else
 			{
 				
@@ -80,18 +80,18 @@ int main(void)
 				isBetter=0;
 				strcpy(filename3,fileName);
 				CoreFun(L, filename, FunNum, cod, temp);
-				cout<<"\nÇëÖØĞÂÓÃ1¶ÁÈ¡ÎÄ¼ş"<<endl;
+				cout<<"\nè¯·é‡æ–°ç”¨1è¯»å–æ–‡ä»¶"<<endl;
 			}
 			system("pause");
 			break;
 		case 4:
-			if (L == NULL) printf("Î´µ¼ÈëÎÄ¼ş\n");
+			if (L == NULL) printf("æœªå¯¼å…¥æ–‡ä»¶\n");
 			else
 			{
 				cod=2;
 				isBetter=1;
 				CoreFun(L, filename, FunNum, cod, temp);
-				cout<<"\nÇëÖØĞÂÓÃ1¶ÁÈ¡ÎÄ¼ş"<<endl;
+				cout<<"\nè¯·é‡æ–°ç”¨1è¯»å–æ–‡ä»¶"<<endl;
 			}
 			system("pause");
 			break;	
@@ -99,12 +99,12 @@ int main(void)
 			{
 				char temper[100]={};
 				ifstream read_file;
-				printf("ÇëÊäÈë´ı½â¾ö·äÎÑÊı¶ÀÎÄ¼şÃû\n");
+				printf("è¯·è¾“å…¥å¾…è§£å†³èœ‚çªæ•°ç‹¬æ–‡ä»¶å\n");
 				scanf("%s",temper);
 				read_file.open(temper,ios::in);
 				read_file.getline(SE,80);
 				read_file.close();
-				printf("ÊäÈëCNFÎÄ¼şÃû,´ËÎÄ¼şÓÃÓÚ±£´æÊı¶À¶ÔÓ¦µÄcnfÎÄ¼ş£º\n");
+				printf("è¾“å…¥CNFæ–‡ä»¶å,æ­¤æ–‡ä»¶ç”¨äºä¿å­˜æ•°ç‹¬å¯¹åº”çš„cnfæ–‡ä»¶ï¼š\n");
 				scanf("%s", fileName);
 				boolCount=9*61;
 				cnfmaker(SE,fileName);
@@ -119,7 +119,7 @@ int main(void)
 						nnn[d[a3-1]+a2]=a1;
 					}
 				}
-				printf("cnfÎÄ¼şÒÑÉú³É!×¼±¸Çó½â\n");
+				printf("cnfæ–‡ä»¶å·²ç”Ÿæˆ!å‡†å¤‡æ±‚è§£\n");
 				int crea_sudoku[100]={0};
 				for(i=1;i<=61;i++)
 				{
@@ -128,14 +128,14 @@ int main(void)
 				CreateSudoku(crea_sudoku);
 				system("pause");
 				ReadFile(CNFList,fileName);
-				if (CNFList == NULL) printf("Î´µ¼ÈëÎÄ¼ş\n");
+				if (CNFList == NULL) printf("æœªå¯¼å…¥æ–‡ä»¶\n");
 				else {
 					value = (int*)malloc(sizeof(int) * (boolCount + 1));
 					for (i = 1; i <= boolCount; i++) value[i] = 1;
 					start = clock();
 					result = DPLL(CNFList, value);
 					finish = clock();
-					printf("Çó½â½á¹û£º%d\n", result);
+					printf("æ±‚è§£ç»“æœï¼š%d\n", result);
 					if (result == 1)
 					{
 						for (i = 1; i <= boolCount; i++)
@@ -151,14 +151,14 @@ int main(void)
 					}
 					CreateSudoku(nnn);
 					if (WriteFile(result, time1, value) == 1)
-						printf("½á¹ûÒÑ±£´æÖÁÍ¬ÃûÎÄ¼ş.res\n");
-					else printf("½á¹û±£´æÊ§°Ü\n");
+						printf("ç»“æœå·²ä¿å­˜è‡³åŒåæ–‡ä»¶.res\n");
+					else printf("ç»“æœä¿å­˜å¤±è´¥\n");
 				}
 				getchar();getchar();
 				break;
 			}
 		case 6:{
-			cout<<"ÕıÔÚÉú³É·äÎÑÊı¶À!ÇëÊäÈëÄÑ¶È:\n1--easy\n2--normal\n3--hard"<<endl;
+			cout<<"æ­£åœ¨ç”Ÿæˆèœ‚çªæ•°ç‹¬!è¯·è¾“å…¥éš¾åº¦:\n1--easy\n2--normal\n3--hard"<<endl;
 			int rank=1;
 			cin>>rank;
 			char game[70]={0};
@@ -168,7 +168,7 @@ int main(void)
 			string new_game=game;
 			fp<<new_game<<endl;
 			fp.close();
-			cout<<endl<<"ÓÎÏ·³õÊ¼»¯ÆåÅÌÒÑÉú³É,±£´æÔÚnew_game.playÖĞ,ÖØĞÂÉú³É½«»á¸²¸ÇÖ®Ç°µÄÓÎÏ·"<<endl;
+			cout<<endl<<"æ¸¸æˆåˆå§‹åŒ–æ£‹ç›˜å·²ç”Ÿæˆ,ä¿å­˜åœ¨new_game.playä¸­,é‡æ–°ç”Ÿæˆå°†ä¼šè¦†ç›–ä¹‹å‰çš„æ¸¸æˆ"<<endl;
 			cout.clear();
 			fflush(stdout);
 			// system("cls");
@@ -200,14 +200,14 @@ int main(void)
 
 void CoreFun(HeadNode* L, string& filename, int FunNum, int cod, int array[ROW][COL]){
 
-    //ÎÄ¼şÊä³ö×¼±¸²¿·Ö
+    //æ–‡ä»¶è¾“å‡ºå‡†å¤‡éƒ¨åˆ†
     string _PATH = filename.replace(filename.end()-4, filename.end(), ".res");
     bool suc;
     int *book = new int[FunNum];
     memset(book, 0, sizeof(int)*FunNum);
     int begin = 0, end = 0;
 
-    //DPLL()ºËĞÄ´¦Àí²¿·Ö
+    //DPLL()æ ¸å¿ƒå¤„ç†éƒ¨åˆ†
     begin = clock();
     bool isTrue;
     if(!isBetter) {isTrue = DPLL(L, book);}
@@ -215,25 +215,25 @@ void CoreFun(HeadNode* L, string& filename, int FunNum, int cod, int array[ROW][
     if(isTrue) {suc = TRUE;}
     else {suc = FALSE;}
     if(cod == 1){
-        if(isTrue) {cout << "ÎªÕæ" << endl;}
-        else {cout << "Îª¼Ù" << endl;}
+        if(isTrue) {cout << "ä¸ºçœŸ" << endl;}
+        else {cout << "ä¸ºå‡" << endl;}
         end = clock();
 		time1=end-begin;
-        cout << "DPLL()²¿·ÖÔËĞĞµÄÊ±¼äÎª" << end-begin << "ms" << endl;
+        cout << "DPLL()éƒ¨åˆ†è¿è¡Œçš„æ—¶é—´ä¸º" << end-begin << "ms" << endl;
     }
 		if(cod == 2){
-        if(isTrue) {cout << "ÎªÕæ" << endl;}
-        else {cout << "Îª¼Ù" << endl;}
+        if(isTrue) {cout << "ä¸ºçœŸ" << endl;}
+        else {cout << "ä¸ºå‡" << endl;}
         end = clock();
 		time2=end-begin;
-        cout << "DPLL()²¿·ÖÔËĞĞµÄÊ±¼äÎª" << end-begin << "ms" << endl;
+        cout << "DPLL()éƒ¨åˆ†è¿è¡Œçš„æ—¶é—´ä¸º" << end-begin << "ms" << endl;
 		if(isTrue&&time1&&time2&&!(strcmp(filename3,fileName))){
 			if(time1>time2){
-						printf("ÓÅ»¯ÂÊÎª[(t-to)/t]*100%%=%f%%",((time1-time2)/time1)*100);
+						printf("ä¼˜åŒ–ç‡ä¸º[(t-to)/t]*100%%=%f%%",((time1-time2)/time1)*100);
 					}
-					else printf("ÓÅ»¯ÂÊÎª[(t-to)/t]*100%%=%f%%",((time2-time1)/time2)*100);
+					else printf("ä¼˜åŒ–ç‡ä¸º[(t-to)/t]*100%%=%f%%",((time2-time1)/time2)*100);
 		}
     }
-    //Êä³ö.resÎÄ¼ş
+    //è¾“å‡º.resæ–‡ä»¶
     OutFileFun1(_PATH, suc, book, end-begin, FunNum, cod);
 }

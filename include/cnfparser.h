@@ -1,9 +1,9 @@
 #include"def.h"
 /*
- * º¯ÊıÃû³Æ: ReadFile
- * ½ÓÊÜ²ÎÊı: SATList*&
- * º¯Êı¹¦ÄÜ: ÓÃÎÄ¼şÖ¸Õëfp´ò¿ªÓÃ»§Ö¸¶¨µÄÎÄ¼ş£¬²¢¶ÁÈ¡ÎÄ¼şÄÚÈİ±£´æµ½¸ø¶¨²ÎÊıÖĞ£¬¶ÁÈ¡³É¹¦·µ»Ø1£¬Ê§°Ü·µ»Ø0
- * ·µ»ØÖµ: int
+ * å‡½æ•°åç§°: ReadFile
+ * æ¥å—å‚æ•°: SATList*&
+ * å‡½æ•°åŠŸèƒ½: ç”¨æ–‡ä»¶æŒ‡é’ˆfpæ‰“å¼€ç”¨æˆ·æŒ‡å®šçš„æ–‡ä»¶ï¼Œå¹¶è¯»å–æ–‡ä»¶å†…å®¹ä¿å­˜åˆ°ç»™å®šå‚æ•°ä¸­ï¼Œè¯»å–æˆåŠŸè¿”å›1ï¼Œå¤±è´¥è¿”å›0
+ * è¿”å›å€¼: int
  */
 int FunNum;
 int ReadFile(SATList*& cnf,char* fileName)
@@ -14,16 +14,16 @@ int ReadFile(SATList*& cnf,char* fileName)
 	SATList* lp;
 	SATNode* tp;
 	if (!(fp=fopen(fileName, "r"))) {
-		printf("ÎÄ¼ş´ò¿ªÊ§°Ü!\n");
+		printf("æ–‡ä»¶æ‰“å¼€å¤±è´¥!\n");
 		return 0;
 	}
 	while ((ch = getc(fp)) == 'c') {
 		while ((ch = getc(fp)) != '\n')
-			continue;           //ÆúÈ¥Ò»ÕûĞĞ
-	}   //ÔËĞĞµ½´Ë£¬ÒÑ¾­¶ÁÈ¡ÁË×Ö·ûp
-	getc(fp); getc(fp); getc(fp); getc(fp); //ÆúÈ¥cnfÈı¸ö×ÖÄ¸
-	fscanf(fp, "%d", &boolCount);    //pºóµÄµÚ1¸öÊıÖµÊÇ²¼¶û±äÔªÊıÁ¿
-	fscanf(fp, "%d", &clauseCount);  //pºóµÄµÚ2¸öÊıÖµÊÇ×Ó¾äÊıÁ¿
+			continue;           //å¼ƒå»ä¸€æ•´è¡Œ
+	}   //è¿è¡Œåˆ°æ­¤ï¼Œå·²ç»è¯»å–äº†å­—ç¬¦p
+	getc(fp); getc(fp); getc(fp); getc(fp); //å¼ƒå»cnfä¸‰ä¸ªå­—æ¯
+	fscanf(fp, "%d", &boolCount);    //påçš„ç¬¬1ä¸ªæ•°å€¼æ˜¯å¸ƒå°”å˜å…ƒæ•°é‡
+	fscanf(fp, "%d", &clauseCount);  //påçš„ç¬¬2ä¸ªæ•°å€¼æ˜¯å­å¥æ•°é‡
 	cnf = (SATList*)malloc(sizeof(SATList));
 	cnf->next = NULL;
 	cnf->head = (SATNode*)malloc(sizeof(SATNode));
@@ -31,18 +31,18 @@ int ReadFile(SATList*& cnf,char* fileName)
 	lp = cnf;
 	tp = cnf->head;
 
-	//´´½¨ÊıÁ¿ÎªclauseCountµÄ×Ó¾ä, iÎª¼ÆÊıÆ÷
+	//åˆ›å»ºæ•°é‡ä¸ºclauseCountçš„å­å¥, iä¸ºè®¡æ•°å™¨
 	for (i = 0; i < clauseCount; i++, lp = lp->next, tp = lp->head)
 	{
 		fscanf(fp, "%d", &number);
 		for (; number != 0; tp = tp->next)
 		{
-			tp->data = number;  //Êı¾İÓò¸³Öµ
-			tp->next = (SATNode*)malloc(sizeof(SATNode));  //¿ª±ÙĞÂ½áµã
+			tp->data = number;  //æ•°æ®åŸŸèµ‹å€¼
+			tp->next = (SATNode*)malloc(sizeof(SATNode));  //å¼€è¾Ÿæ–°ç»“ç‚¹
 			fscanf(fp, "%d", &number);
 			if (number == 0) tp->next = NULL;
 		}
-		lp->next = (SATList*)malloc(sizeof(SATList));  //¿ª±ÙĞÂ±í
+		lp->next = (SATList*)malloc(sizeof(SATList));  //å¼€è¾Ÿæ–°è¡¨
 		lp->next->head = (SATNode*)malloc(sizeof(SATNode));
 		if (i == clauseCount - 1)
 		{
@@ -75,26 +75,26 @@ int ReadFile(SATList*& cnf,char* fileName)
 
 
 
-HeadNode* CnfParser(string& filename){//½âÎöÎÄ¼ş£¬·µ»ØÍ·½áµãÖ¸ÕëL
+HeadNode* CnfParser(string& filename){//è§£ææ–‡ä»¶ï¼Œè¿”å›å¤´ç»“ç‚¹æŒ‡é’ˆL
     string PATH = filename;
-    ifstream fp(PATH);//×¢Òâ£ºÓÉÓÚ\·ûºÅ±¾ÉíÎª×ªÒå×Ö·û£¬ËùÒÔĞèÒªÁ½¸ö´Ë·ûºÅ
+    ifstream fp(PATH);//æ³¨æ„ï¼šç”±äº\ç¬¦å·æœ¬èº«ä¸ºè½¬ä¹‰å­—ç¬¦ï¼Œæ‰€ä»¥éœ€è¦ä¸¤ä¸ªæ­¤ç¬¦å·
     if(!fp){cout << "File can not open"; system("pause");return nullptr;}
     char ch;
-    char exp[105];//exp:¶ÔcnfÎÄ¼şµÄ½âÊÍexplain
+    char exp[105];//exp:å¯¹cnfæ–‡ä»¶çš„è§£é‡Šexplain
     fp >> ch;
     while(ch != 'p'){
         fp.getline(exp, 100);
-        //×¢Òâ£º´Ë´¦µÄexpÖ»ÄÜÊÇÓÃc-string£¨Êı×é£©£¬²»ÄÜÓÃstring
-        //ÏêÏ¸½âÊÍ:n:Pointer to an array of characters where extracted characters are stored as a c-string.
+        //æ³¨æ„ï¼šæ­¤å¤„çš„expåªèƒ½æ˜¯ç”¨c-stringï¼ˆæ•°ç»„ï¼‰ï¼Œä¸èƒ½ç”¨string
+        //è¯¦ç»†è§£é‡Š:n:Pointer to an array of characters where extracted characters are stored as a c-string.
         fp >> ch;
     }
-    string cnf; int ClauseNum;//·Ö±ğ´æ´¢CNF¡¢±äÔª¸öÊı¡¢×Ó¾ä¸öÊı¡£
+    string cnf; int ClauseNum;//åˆ†åˆ«å­˜å‚¨CNFã€å˜å…ƒä¸ªæ•°ã€å­å¥ä¸ªæ•°ã€‚
     fp >> cnf >> FunNum >> ClauseNum;
-    //²âÊÔÓÃÀı£ºcout << ClauseNum << " " << FunNum << endl;
-    //ÏÂÃæÑ­»·½«ËùÓĞµÄ×Ó¾ä¶ÁÈëµ½Éè¼ÆºÃµÄÊı¾İ½á¹¹ÖĞ
-    HeadNode* L = new HeadNode;//LÎªHeadNode½áµãµÄÍ·½áµã
-    L->num = ClauseNum;//×Ö¾ä¸öÊı£¨Ò²¾ÍÊÇÓĞ¶àÉÙĞĞ£©
-    HeadNode* pH = new HeadNode; L->down = pH; pH->down = nullptr;//LÖĞnum±íÊ¾ÓĞ¶àÉÙĞĞ
+    //æµ‹è¯•ç”¨ä¾‹ï¼šcout << ClauseNum << " " << FunNum << endl;
+    //ä¸‹é¢å¾ªç¯å°†æ‰€æœ‰çš„å­å¥è¯»å…¥åˆ°è®¾è®¡å¥½çš„æ•°æ®ç»“æ„ä¸­
+    HeadNode* L = new HeadNode;//Lä¸ºHeadNodeç»“ç‚¹çš„å¤´ç»“ç‚¹
+    L->num = ClauseNum;//å­—å¥ä¸ªæ•°ï¼ˆä¹Ÿå°±æ˜¯æœ‰å¤šå°‘è¡Œï¼‰
+    HeadNode* pH = new HeadNode; L->down = pH; pH->down = nullptr;//Lä¸­numè¡¨ç¤ºæœ‰å¤šå°‘è¡Œ
     for(int i = 1; i <= ClauseNum; i++){
         int tep;
         fp >> tep;
@@ -103,7 +103,7 @@ HeadNode* CnfParser(string& filename){//½âÎöÎÄ¼ş£¬·µ»ØÍ·½áµãÖ¸ÕëL
         fp >> tep;
         while(tep){
             p = new DataNode;
-            p->value = tep;//²ÉÓÃÍ·²å·¨½¨Á¢Á´±í
+            p->value = tep;//é‡‡ç”¨å¤´æ’æ³•å»ºç«‹é“¾è¡¨
             p->next = pH->right;
             pH->right = p;
             pH->num++;
@@ -114,11 +114,11 @@ HeadNode* CnfParser(string& filename){//½âÎöÎÄ¼ş£¬·µ»ØÍ·½áµãÖ¸ÕëL
             pH->down = L->down;
             L->down = pH;
         }
-        //fp.get();//getµô»»ĞĞ·û
+        //fp.get();//getæ‰æ¢è¡Œç¬¦
     }
-    fp.close();//¹Ø±ÕÎÄ¼şÁ÷
+    fp.close();//å…³é—­æ–‡ä»¶æµ
     
-    //½«½âÎöºóµÄcnfÎÄ¼ş½øĞĞÊä³ö±íÊ¾£¬ÓÃÓÚ½øĞĞ´úÂë¿é²âÊÔ
+    //å°†è§£æåçš„cnfæ–‡ä»¶è¿›è¡Œè¾“å‡ºè¡¨ç¤ºï¼Œç”¨äºè¿›è¡Œä»£ç å—æµ‹è¯•
     /*HeadNode* _pH = L->down;
 
     while(_pH){
