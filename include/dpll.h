@@ -25,6 +25,11 @@ bool DPLL(HeadNode* L, int* book){
     return result;
 }
 
+// NEWDPLL函数使用了一个栈来存储每次尝试的赋值，而不是使用递归调用，这样可以节省栈空间和避免栈溢出的风险。
+// NEWDPLL函数使用了一个数组来记录每次改变的链表结点内容，这样可以方便地恢复原来的状态，而不需要复制整个链表。
+// NEWDPLL函数使用了一个数组来记录每次选取的变元，这样可以方便地取反该变元，而不需要再次调用选取函数。
+// NEWDPLL函数不需要循环调用SimplifyCnf函数。
+
 bool NewDPLL(HeadNode* L, int* book){//非递归版本DPLL算法
     stack<HeadNode*> S;
     HeadNode* ListL[10000] = {nullptr}; int i = 0;//ListL用来记录每次改变的链表结点内容

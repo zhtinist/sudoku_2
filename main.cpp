@@ -32,7 +32,7 @@ int isBetter=0;
  */
 int main(void)
 {
-	int cod=0;
+	int cod=0;//code 决定是否进行优化率的计算
 	string filename;
 	while (op)
 	{
@@ -186,13 +186,6 @@ int main(void)
 	}
 	return 0;
 }
-
-
-
-
-
-
-
 
 
 
